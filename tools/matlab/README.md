@@ -11,5 +11,5 @@ After importing all the scripts in the Matlab workspace, the function **Generate
 
 **More Information: [http://www.st.com](http://st.com/MEMS)**
 
-**Copyright (C) 2019 STMicroelectronics**
+**Copyright © 2019 STMicroelectronics**
 

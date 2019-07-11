@@ -1,17 +1,17 @@
 ## 1 - Introduction
 
-This repository is intended to provide information on the **Machine Learning Core** feature available on some [STMicroelectronics](www.st.com/mems) sensors.
+This repository is intended to provide information on the **Machine Learning Core** feature available in some [STMicroelectronics](www.st.com/mems) sensors.
 
-The Machine Learning processing capability allows moving some algorithms from the application processor to the *STMicroelectronics* sensor, enabling consistent reduction of power consumption.
+Machine Learning processing allows moving some algorithms from the application processor to the *STMicroelectronics* sensor, enabling consistent reduction of power consumption.
 
-The Machine Learning processing capability is obtained through *decision-tree logic*. A decision tree is a mathematical tool composed of a series of configurable *nodes*. Each *node* is characterized by an *“if-then-else”* condition, where an input signal (represented by statistical parameters calculated from the sensor data) is evaluated against a threshold.
+Machine Learning processing is obtained through *decision-tree logic*. A decision tree is a mathematical tool composed of a series of configurable *nodes*. Each *node* is characterized by an *“if-then-else”* condition, where an input signal (represented by statistical parameters calculated from the sensor data) is evaluated against a threshold.
 
 The results of the decision tree can be read from the application processor at any time. Furthermore, there is the possibility to **generate an interrupt** for every change in the result in the decision tree.
 
 
 ## 2 - Repository folder structure
 
-This repository contains different folders which identifies sensor part numbers supporting the **Machine Learning Core** feature.
+This repository contains different folders which identify sensor part numbers supporting the **Machine Learning Core** feature.
 
 Each folder related to the sensor part number contains sub-folders with examples of **Machine Learning Core** configurations. See a typical path below:
 
@@ -19,9 +19,9 @@ Each folder related to the sensor part number contains sub-folders with examples
 \lsm6dsox\Vibration monitoring\
 ````
 
-The folder tools contains some additional scripts for decision tree generation.
+The folder `tools` contains some additional scripts for decision tree generation.
 
-## 3 - Example sub-folder files description 
+## 3 - Example sub-folder file description 
 
 Each example sub-folder contains:
 
@@ -46,20 +46,19 @@ For using *Unico GUI* Configuration Files (`.ucf`):
 > * Unico GUI for device configuration
 
 
-## 5 - Running Examples
+## 5 - Examples
 
 The examples can be used with:
 
 - **Unico GUI** (available for: [Windows](https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/stsw-mki109w.html), [Linux](<https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/stsw-mki109l.html>), [Mac OS X](<https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/stsw-mki109m.html>)) and  [Professional MEMS Tool board](<https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mki109v3.html#overview>) (STEVAL-MKI109V3)
-  - Run *Unico GUI* selecting the desired device, then go to *Load/Save* tab, and load the *Unico GUI* Configuration File (`.ucf`)
+  - Run *Unico GUI* selecting the desired device, then go to the *Load/Save* tab, and load the *Unico GUI* Configuration File (`.ucf`)
 - Any *C-programmable* hardware
   - Include the C header file (`.h`) in the desired project
   - Use the desired interface C library for the target *MCU* for writing the array configuration contained in the *C header* file (`.h`)
   - Some examples of integration are available at [platform independent drivers repository]( http://www.st.com/content/st_com/en/products/embedded-software/mems-and-sensors-software/drivers-for-mems/c-driver-mems.html ) for *STMicroelectronics* sensors.
 
-
 ------
 
 **More Information: [http://www.st.com](http://st.com/MEMS)**
 
-**Copyright (C) 2019 STMicroelectronics**
+**Copyright © 2019 STMicroelectronics**

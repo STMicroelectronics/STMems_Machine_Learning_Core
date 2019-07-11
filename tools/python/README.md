@@ -7,5 +7,5 @@ The scripts are available both as Jupyter notebook (*.ipynb*) and as common Pyth
 
 **More Information: [http://www.st.com](http://st.com/MEMS)**
 
-**Copyright (C) 2019 STMicroelectronics**
+**Copyright © 2019 STMicroelectronics**
 

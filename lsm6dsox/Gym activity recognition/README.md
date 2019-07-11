@@ -29,11 +29,10 @@ The configuration runs at 104 Hz, computing features in a window of 208 samples.
 ## 4 - Interrupts
 
 The configuration does not generate any interrupt. 
-It is possible routing interrupt status bits to INT1 and INT2 pins through registers MLC_INT1 (0Dh) and MLC_INT2(11h).
-
+It is possible to route the interrupts status bits to the INT1 and INT2 pins through registers MLC_INT1 (0Dh) and MLC_INT2(11h).
 
 ------
 
 **More Information: [http://www.st.com](http://st.com/MEMS)**
 
-**Copyright (C) 2019 STMicroelectronics**
+**Copyright © 2019 STMicroelectronics**
