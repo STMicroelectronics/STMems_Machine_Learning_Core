@@ -2128,8 +2128,6 @@ const ucf_line_t lsm6dsox_activity_recognition_for_mobile[] = {
   {.address = 0x02, .data = 0x51,},
   {.address = 0x08, .data = 0xAB,},
   {.address = 0x09, .data = 0xE4,},
-  {.address = 0x09, .data = 0x00,},
-  {.address = 0x09, .data = 0x00,},
   {.address = 0x01, .data = 0x80,},
   {.address = 0x17, .data = 0x00,},
   {.address = 0x04, .data = 0x00,},
