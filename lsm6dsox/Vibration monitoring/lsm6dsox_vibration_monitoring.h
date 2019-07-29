@@ -182,8 +182,6 @@ const ucf_line_t lsm6dsox_vibration_monitoring[] = {
   {.address = 0x02, .data = 0x31,},
   {.address = 0x08, .data = 0x65,},
   {.address = 0x09, .data = 0xE0,},
-  {.address = 0x09, .data = 0x00,},
-  {.address = 0x09, .data = 0x00,},
   {.address = 0x01, .data = 0x80,},
   {.address = 0x17, .data = 0x00,},
   {.address = 0x04, .data = 0x00,},
