@@ -1,6 +1,6 @@
 ## 1 - Introduction
 
-Simple example of 6D position recognition implemented using the Mean features (singned/unsigned) on different axes of the accelerometer data. 
+Simple example of 6D position recognition implemented using the Mean features (signed/unsigned) on different axes of the accelerometer data. 
 The configuration runs at 26 Hz, computing features in a window of 16 samples.
 
 
@@ -23,8 +23,7 @@ Any orientation
 
 ## 4 - Interrupts
 
-The configuration does not generate any interrupt. 
-It is possible to route the interrupts status bits to the INT1 and INT2 pins through registers MLC_INT1 (0Dh) and MLC_INT2(11h).
+The configuration generates an interrupt (pulsed) on INT1 pin every time the register MLC0_SRC (70h) is updated with a new value. 
 
 ------
 
