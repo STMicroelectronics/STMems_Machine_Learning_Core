@@ -28,8 +28,7 @@ The configuration runs at 104 Hz, computing features in a window of 208 samples.
 
 ## 4 - Interrupts
 
-The configuration does not generate any interrupt. 
-It is possible to route the interrupts status bits to the INT1 and INT2 pins through registers MLC_INT1 (0Dh) and MLC_INT2(11h).
+The configuration generates an interrupt (pulsed) on INT1 pin every time the register MLC0_SRC (70h) is updated with a new value. 
 
 ------
 

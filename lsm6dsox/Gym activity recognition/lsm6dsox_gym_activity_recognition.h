@@ -508,6 +508,10 @@ const ucf_line_t lsm6dsox_gym_activity_recognition[] = {
   {.address = 0x01, .data = 0x00,},
   {.address = 0x10, .data = 0x48,},
   {.address = 0x11, .data = 0x4C,},
+  {.address = 0x5E, .data = 0x02,},
+  {.address = 0x01, .data = 0x80,},
+  {.address = 0x0D, .data = 0x01,},
+  {.address = 0x01, .data = 0x00,},
 };
 
 #ifdef __cplusplus
