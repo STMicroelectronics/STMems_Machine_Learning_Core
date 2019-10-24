@@ -218,7 +218,7 @@ const ucf_line_t ism330dhcx_motion_intensity[] = {
   {.address = 0x05, .data = 0x10,},
   {.address = 0x02, .data = 0x01,},
   {.address = 0x01, .data = 0x00,},
-  {.address = 0x12, .data = 0x04,},
+  {.address = 0x12, .data = 0x44,},
   {.address = 0x01, .data = 0x80,},
   {.address = 0x60, .data = 0x15,},
   {.address = 0x01, .data = 0x00,},
