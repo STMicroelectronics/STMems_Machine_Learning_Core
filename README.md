@@ -1,6 +1,6 @@
 ## 1 - Introduction
 
-This repository is intended to provide information on the **Machine Learning Core** feature available in some [STMicroelectronics](www.st.com/mems) sensors.
+This repository is intended to provide information on the **Machine Learning Core** feature available in some [**MEMS sensors**](https://www.st.com/en/mems-and-sensors.html?sc=MEMS).
 
 Machine Learning processing allows moving some algorithms from the application processor to the *STMicroelectronics* sensor, enabling consistent reduction of power consumption.
 
