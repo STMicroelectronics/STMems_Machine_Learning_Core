@@ -1,0 +1,9 @@
+
+F4_PeakToPeak_on_ACC_V <= 0.108: stationary
+F4_PeakToPeak_on_ACC_V > 0.108
+|   F3_ENERGY_on_ACC_V <= 66.922: motion1
+|   F3_ENERGY_on_ACC_V > 66.922: motion2
+
+Number of Leaves  : 	 3
+
+Size of the tree : 	 5

@@ -1,16 +1,10 @@
-# Decision tree generation corpus taken from: https://www.datacamp.com/community/tutorials/decision-tree-classification-python
-# Load libraries
-
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier # Import Decision Tree Classifier
 from sklearn.model_selection import train_test_split # Import train_test_split function
 from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
 from sklearn import tree
 from scipy.io import arff
-import sys
 import re
-
-# === Help functions start ===
 
 def isLeaf ( src_str ):
     r = re.match("[0-9]+ \[label=\"", src_str)
@@ -20,18 +14,18 @@ def isLeaf ( src_str ):
     else:
         return False
 
-def printClassName (src_str):
+def printClassName (src_str, dt_file):
     r = re.search("[0-9]+ \[label=\"", src_str)
     s = re.search("\"\] ;", src_str)
     t = re.search("\\\\n", src_str)
     if (r != None and s != None and t == None):
-        print(src_str[r.end():s.start()], end = "")
+        print(src_str[r.end():s.start()], end = "", file=dt_file)
     
-def printCondition ( src_str ):
+def printCondition ( src_str, dt_file ):
     r = re.search("[0-9]+ \[label=\"", src_str)
     s = re.search("\\\\n", src_str)
     if (r != None and s != None):
-        print(src_str[r.end():s.start()], end = "")
+        print(src_str[r.end():s.start()], end = "", file=dt_file)
 
 def getNodeNum (src_str):
     r = re.match("[0-9]+", src_str)
@@ -59,7 +53,7 @@ def oppOperator (src_str):
     src_str = src_str.replace(">=", "<")
     return src_str
 
-def formatTree ( line, indent ):
+def formatTree ( line, indent, dt_file ):
     global leaf_size, tree_size
     
     # If the first line is just node connection info line, skip it
@@ -68,14 +62,14 @@ def formatTree ( line, indent ):
 
     # If the first line is a leaf, print its name with \n, othewise only \n
     if (isLeaf(line[0])):
-        print(": ", end = "")
-        printClassName(line[0])
-        print("")
+        print(": ", end = "", file=dt_file)
+        printClassName(line[0], dt_file)
+        print("", file=dt_file)
         leaf_size += 1
         tree_size += 1
         return
     else:
-        print("")
+        print("", file=dt_file)
         tree_size += 1
 
     nIndex = getNodeNum(line[0]) # Get node index
@@ -83,17 +77,17 @@ def formatTree ( line, indent ):
 
     if( len(line[1:splitIndex])> 0):
         # Print original condition
-        print("|   "*indent, end = "")
-        printCondition(line[0])
-        formatTree(line[1:splitIndex], indent + 1) # Call recusively for the first part of original tree
+        print("|   "*indent, end = "", file=dt_file)
+        printCondition(line[0], dt_file)
+        formatTree(line[1:splitIndex], indent + 1, dt_file) # Call recusively for the first part of original tree
         
     if ( len(line[splitIndex-1:]) > 0):
         # Print opposite condition
-        print("|   "*indent, end = "")
-        printCondition(oppOperator(line[0]))
-        formatTree(line[splitIndex-1:], indent + 1)# Call recusively for the second part of original tree
+        print("|   "*indent, end = "", file=dt_file)
+        printCondition(oppOperator(line[0]), dt_file)
+        formatTree(line[splitIndex-1:], indent + 1, dt_file)# Call recusively for the second part of original tree
         
-def printTree (dot_tree):
+def printTree (dot_tree, dt_file):
     new_tree = []
      
     # Preprocess the tree 
@@ -107,46 +101,83 @@ def printTree (dot_tree):
         new_tree.append(line)
     
     # Print in Weka format
-    formatTree ( new_tree[2:-1], 0 )
+    formatTree ( new_tree[2:-1], 0, dt_file )
     
-    print(f"\nNumber of Leaves  : \t{leaf_size}")
-    print(f"\nSize of the tree : \t{tree_size}")
+    print('\nNumber of Leaves  : \t', leaf_size, file=dt_file)
+    print('\nSize of the tree : \t', tree_size, file=dt_file)
 
-# === Help functions end ===
+def generateDecisionTree (arff_filename, dectree_filename):
+    data = arff.loadarff(arff_filename)  # <- Write desired file here
+    data_set = pd.DataFrame(data[0])
+    data_set['class'] = data_set['class'].str.decode('ASCII')
+    col_names = list(data_set)
 
-# === Code starts here ===
-
-# load dataset
-data = arff.loadarff(sys.argv[1]) # Load file into panda dataframe
-data_set = pd.DataFrame(data[0])
-data_set['class'] = data_set['class'].str.decode('ASCII')
-col_names = list(data_set)
-
-feature_cols = col_names[:-1]
-class_name = list(set(data_set[col_names[-1]]))
+    feature_cols = col_names[:-1]
+    class_name = list(set(data_set[col_names[-1]]))
 
 
-X = data_set[feature_cols] # Features
-y = data_set[col_names[-1]] # Target variable
+    X = data_set[feature_cols] # Features
+    y = data_set[col_names[-1]] # Target variable
 
-# Split dataset into training set and test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # 70% training and 30% test
-# Create Decision Tree classifer object
-clf = tree.DecisionTreeClassifier() # You can specify the max depth by passing argument for example: max_depth=3
+    # Split dataset into training set and test set
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # 70% training and 30% test
 
-# Train Decision Tree Classifer
-clf = clf.fit(X_train,y_train)
+    # Create Decision Tree classifer object
+    clf = tree.DecisionTreeClassifier() # You can specify the max depth by passing argument for example: max_depth=3
 
-#Predict the response for test dataset
-y_pred = clf.predict(X_test)
+    # Train Decision Tree Classifer
+    clf = clf.fit(X_train,y_train)
 
-# Model Accuracy, how often is the classifier correct?
-print("\nAccuracy:",metrics.accuracy_score(y_test, y_pred), end = "\n\n")
+    #Predict the response for test dataset
+    y_pred = clf.predict(X_test)
 
+    # Model Accuracy, how often is the classifier correct?
+    dectree_accuracy = metrics.accuracy_score(y_test, y_pred)
+    print("Accuracy:", dectree_accuracy)
 
-leaf_size = 0
-tree_size = 0
+    global leaf_size
+    global tree_size
+    leaf_size = 0
+    tree_size = 0
 
-dot_tree = tree.export_graphviz(clf, out_file=None, class_names=class_name, label= "none", impurity = False, feature_names = feature_cols)
+    dot_tree = tree.export_graphviz(clf, out_file=None, class_names=clf.classes_, label= "none", impurity = False, feature_names = feature_cols)
 
-printTree (dot_tree)
+    dt_file = open(dectree_filename, "w")
+    printTree(dot_tree, dt_file)
+    dt_file.close()
+
+    n_nodes = leaf_size - 1
+    print("Number of nodes:", n_nodes)
+    return dectree_accuracy, n_nodes
+
+def generate_subset_of_ARFF(arff_filename, arff_subset_filename, classes_subset):
+    with open(arff_filename, "r") as input:
+        with open(arff_subset_filename, "w") as output:
+            data_section_started = False
+            for line in input:
+                if  line.startswith('@attribute class {'):
+                    new_line_class = '@attribute class {'
+                    for i_class in range(len(classes_subset)):
+                        if i_class > 0: 
+                            new_line_class += ', '
+                        new_line_class += classes_subset[i_class]
+                    new_line_class += '}\r\n'
+                    output.write(new_line_class)
+                else:
+                    if line.startswith('@data'):
+                        data_section_started = True
+                        output.write(line)
+                        
+                    if (data_section_started == False):
+                        output.write(line)
+                    else:
+                        class_in_line = line.split(', ')[-1]
+                        if (class_in_line.rstrip() in classes_subset):
+                            output.write(line)                  
+    input.close()
+    output.close()
+    return
+	
+arff_filename = "test.arff"
+dectree_filename = "dectree.txt"
+dectree_accuracy, dectree_nodes = generateDecisionTree(arff_filename, dectree_filename)
