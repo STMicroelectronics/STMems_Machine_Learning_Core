@@ -1,0 +1,56 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.trees.J48 -C 0.25 -M 2
+Relation:     MLC
+Instances:    190
+Attributes:   4
+              F1_MEAN_on_ACC_Z
+              F2_MEAN_on_filter_DIFF_on_ACC_V
+              F3_VAR_on_ACC_V
+              class
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+J48 pruned tree
+------------------
+
+F3_VAR_on_ACC_V <= 0.00293
+|   F1_MEAN_on_ACC_Z <= -0.844238: face_down (66.0)
+|   F1_MEAN_on_ACC_Z > -0.844238: face_up (73.0)
+F3_VAR_on_ACC_V > 0.00293: shaking (51.0)
+
+Number of Leaves  : 	3
+
+Size of the tree : 	5
+
+
+Time taken to build model: 0.01 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances         189               99.4737 %
+Incorrectly Classified Instances         1                0.5263 %
+Kappa statistic                          0.992 
+Mean absolute error                      0.0035
+Root mean squared error                  0.0592
+Relative absolute error                  0.7975 %
+Root relative squared error             12.6288 %
+Total Number of Instances              190     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 1.000    0.009    0.986      1.000    0.993      0.989    0.996     0.986     face_up
+                 0.985    0.000    1.000      0.985    0.992      0.988    0.992     0.990     face_down
+                 1.000    0.000    1.000      1.000    1.000      1.000    1.000     1.000     shaking
+Weighted Avg.    0.995    0.003    0.995      0.995    0.995      0.992    0.996     0.991     
+
+=== Confusion Matrix ===
+
+  a  b  c   <-- classified as
+ 73  0  0 |  a = face_up
+  1 65  0 |  b = face_down
+  0  0 51 |  c = shaking
+

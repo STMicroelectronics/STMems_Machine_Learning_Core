@@ -1,0 +1,4 @@
+F3_VAR_on_ACC_V <= 0.00293
+|   F1_MEAN_on_ACC_Z <= -0.844238: face_down (66.0)
+|   F1_MEAN_on_ACC_Z > -0.844238: face_up (73.0)
+F3_VAR_on_ACC_V > 0.00293: shaking (51.0)
