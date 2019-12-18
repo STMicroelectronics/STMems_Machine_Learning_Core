@@ -1,6 +1,6 @@
 This configuration example shows all the steps of the Machine Learning Core (MLC) configuration, from data logging to the device configuration. The use-case is the LSM6DSOX device, but this example is similarly applicable to other ST devices embedding the MLC feature. For further details on the MLC configuration procedure, please refer to the application notes available at www.st.com
 
-![MLC_steps](.\MLC_steps.png)
+![MLC_steps](./MLC_steps.png)
 
 
 
