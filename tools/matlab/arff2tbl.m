@@ -33,7 +33,7 @@ function [tbl, labels, fields] = arff2tbl(filename)
             error('MATLAB:file', 'ARFF file not recognized');
         end
         
-        if ~isempty(line) && line(1) == '@' && strcmp(line(2:9), 'RELATION')
+        if ~isempty(line) && line(1) == '@' && (strcmp(line(2:9), 'RELATION') || strcmp(line(2:9), 'relation'))
             relation = line(11:end);
             disp(relation);
             break;
@@ -51,7 +51,7 @@ function [tbl, labels, fields] = arff2tbl(filename)
             break;
         end
         
-        if length(line) > 5 && line(1) == '@' && strcmpi(line(2:10), 'ATTRIBUTE')
+        if length(line) > 5 && line(1) == '@' && (strcmpi(line(2:10), 'ATTRIBUTE') || strcmpi(line(2:10), 'attribute'))
             attr = textscan(line, '%s');
             attr = attr{1};
             
@@ -78,9 +78,9 @@ function [tbl, labels, fields] = arff2tbl(filename)
 %                 out = textscan(typedef, '%s', 'Delimiter', ' ,{}', 'MultipleDelimsAsOne', 1);
 %                 nomspec.(fields{index}) = out{:};
             else
-                if strcmpi(typedef, 'NUMERIC')
+                if (strcmpi(typedef, 'NUMERIC') || strcmpi(typedef, 'numeric'))
                     types{index} = 'double';
-                elseif strcmpi(typedef, 'STRING')
+                elseif (strcmpi(typedef, 'STRING') || strcmpi(typedef, 'string'))
                     types{index} = 'string';
                 else
                     dt = strfind(typedef, ' ');
