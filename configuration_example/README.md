@@ -26,7 +26,7 @@ For more details on the software tools:
 
 **Hardware**: 
 
-in this example we will be using the **LSM6DSOX inertial measurement unit (IMU)**, with an accelerometer and a gyroscope sensor (see the next paragraph for more details). However, the same procedure also applies to other sensors with MLC support.
+In this example we will be using the **LSM6DSOX inertial measurement unit (IMU)**, with an accelerometer and a gyroscope sensor (see the next paragraph for more details). However, the same procedure also applies to other sensors with MLC support.
 
 For more details on the hardware:
 
@@ -47,9 +47,12 @@ Each class to be classified by the decision tree must be characterized by one or
 **Hardware** needed:
 
 - [STEVAL-MKI109V3]( https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mki109v3.html ), professional evaluation board for MEMS sensors, referenced as **ProfiMEMS** in ST docs. It is based on the STM32F401 microcontroller and features a DIL24 connector to plug the daughterboard with the sensor under test. Check that the firmware is up to date (version 3.6.36 or later).
+
 - [STEVAL-MKI197V1](  https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mki197v1.html  ), daughterboard with **LSM6DSOX** IMU sensor (referenced as **DIL24 adapter** in the ST docs). It must be plugged into the ProfiMEMS motherboard.
+
 - Micro USB cable to connect the ProfiMEMS motherboard to the PC
-- **Note**: Even if ProfiMEMS has been used in this example other plaftorms are supported (see [Getting started with ST development kit and GUI](https://www.st.com/content/ccc/resource/sales_and_marketing/presentation/product_presentation/group0/f6/ab/59/ed/d8/d0/4a/47/MLC_tools_and_GUI/files/MLC_tools_and_GUI.pdf/_jcr_content/translations/en.MLC_tools_and_GUI.pdf)).
+
+  **Note**: Even if ProfiMEMS has been used in this example other plaftorms are supported (see [Getting started with ST development kit and GUI](https://www.st.com/content/ccc/resource/sales_and_marketing/presentation/product_presentation/group0/f6/ab/59/ed/d8/d0/4a/47/MLC_tools_and_GUI/files/MLC_tools_and_GUI.pdf/_jcr_content/translations/en.MLC_tools_and_GUI.pdf)).
 
 **Software** needed:
 
@@ -114,14 +117,21 @@ Settings selected in the Configuration tab:
 
 Even if Unico offers the possibility to design the decision tree using a built-in algorithm, in this example Weka has been used.  Other third-party tools can also be used: Python SciKit, Matlab, and RapidMiner.
 
-Procedure to design the decision tree classifier with Weka
+Procedure to design the decision tree classifier with Weka:
 
 1. Run Weka and click the **Explorer** button
+
 2. Select the **Preprocess tab** (it should already be selected) and click on **Open File**. Browse to select and load the **2_Features.arff** file generated in the previous paragraph
+
 3. Select the **Classify tab**, click on **Choose** to select the design algorithm. Expand the **trees** item and select the **J48 algorithm**. You can also tune validation and other options
+
 4. Select the output of the classifier (the label, referenced as "nominal class" should already be selected) and click on **Start**
+
 5. When the design is completed, the generated decision tree and the corresponding performance report is printed on the console.  For this example, the whole console output is saved in **3_Weka_Classifier_J48.txt**
-6. Copy the generated decision tree and save it into a text file. This file will be fed into Unico GUI to generate the corresponding MLC configuration file. For this example, the decision tree is saved in **3_Decision_Tree.txt**. The corresponding section is highlight in the following picture.![3_Weka](./3_Weka.jpg)
+
+6. Copy the generated decision tree and save it into a text file. This file will be fed into Unico GUI to generate the corresponding MLC configuration file. For this example, the decision tree is saved in **3_Decision_Tree.txt**. The corresponding section is highlight in the following picture.
+
+   ![3_Weka](./3_Weka.jpg)
 
 For more details on the decision tree generation using third party tools, check the application note [AN5259](  https://www.st.com/resource/en/application_note/dm00563460-lsm6dsox-machine-learning-core-stmicroelectronics.pdf  ):
 
