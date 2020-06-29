@@ -25,7 +25,7 @@ Number of Leaves  : 	3
 Size of the tree : 	5
 
 
-Time taken to build model: 0.01 seconds
+Time taken to build model: 0.02 seconds
 
 === Stratified cross-validation ===
 === Summary ===
