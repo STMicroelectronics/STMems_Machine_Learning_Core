@@ -2,13 +2,13 @@
 
 The Yoga Pose recognition algorithm described in this example is intended for wearable devices, since all the data logs have been acquired with the device placed on the left leg, with the orientation described in section 2. Fourteen different classes are recognized, as described in section 3.
 
-The Machine Learning Core is configured to run at 104 Hz, features are extracted on windows of 52 samples, therefore the Decision Tree classifier output is updated two times per second.
+The **Machine Learning Core (MLC)** is configured to run at 104 Hz, features are extracted using windows of 52 samples, therefore the Decision Tree classifier output is updated two times per second (104 Hz / 52 = 2 Hz).
 
-Three different features are computed from accelerometer and gyroscope data:
+Only accelerometer data is used. The full-scale is set to 2 g. Three different features are computed:
 
-- Mean on accelerometer X/Y/Z axes
-- Variance on the gyroscope X/Y/Z axes
-- Energy on the gyroscope squared norm
+- Mean on accelerometer X axis
+- Mean on accelerometer Y axis
+- Mean on accelerometer Z axis
 
 
 ## 2 - Device orientation
