@@ -1,0 +1,33 @@
+@relation 'MLC'
+
+@attribute F1_MEAN_on_ACC_V numeric
+@attribute class {static, med_int, high_int}
+
+@data
+0.995605, static
+0.995117, static
+0.995605, static
+0.995605, static
+0.995605, static
+0.995117, static
+0.995605, static
+0.995605, static
+0.995605, static
+1.03223, med_int
+0.990234, med_int
+1.05273, med_int
+0.96875, med_int
+0.983887, med_int
+0.960938, med_int
+1.03516, med_int
+0.964355, med_int
+1.08984, med_int
+4.30859, high_int
+4.46484, high_int
+4.32031, high_int
+4.15625, high_int
+3.72852, high_int
+4.16016, high_int
+4.41406, high_int
+3.94531, high_int
+3.66992, high_int

@@ -1,0 +1,49 @@
+F1_MEAN_on_ACC_V <= 1.08984
+|   F1_MEAN_on_ACC_V <= 0.990234: med_int (5.0)
+|   F1_MEAN_on_ACC_V > 0.990234: static (9.0/4.0)
+F1_MEAN_on_ACC_V > 1.08984: high_int (9.0)
+
+Number of Leaves  : 	3
+Size of the tree : 	5
+
+
+class:
+ => static, med_int, high_int, 
+features:
+ => F1_MEAN_on_ACC_V, 
+
+
+Mean absolute error	1
+Root mean squared error	1
+ ======= Whole data training with Confidence Factor: 0.9 ========= 
+
+
+===== Confusion Matrix =====
+         	static   	med_int  	high_int 	<-- classified as
+static   	9	0	0	
+med_int  	0	9	0	
+high_int 	0	0	9	
+
+Total Number of Instances        : 27
+Correctly Classified Instances   : 27
+Incorrectly Classified Instances : 0
+Kappa Statistic: 0.333333
+Accuracy: 100%
+
+Report  :	precision	recall	support	
+static   	1    	1	 9
+med_int  	1    	1	 9
+high_int 	1    	1	 9
+
+avg/total	1    	1	 27
+The current number of nodes: 3 is greater than the maximum number of nodes: 1.
+The class and its number of leaves: { high_int:1, static:1, med_int:2, }
+Pruning ... 
+
+The total error sample cause by pruning has more than 5% of total sample number.
+Further Pruning will reduce the accuracy significantly.
+Current Node:3
+
+Current Result-> Number of Nodes: 2; Number of leaves: 3
+Pruning ... 
+Pruning stop. The number of leaves is less than the number of classes.
