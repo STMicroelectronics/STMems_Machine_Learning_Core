@@ -1,0 +1,8 @@
+F2_VAR_on_ACC_V < 0.26953
+|   F2_VAR_on_ACC_V < 0.026855: stationary
+|   F2_VAR_on_ACC_V >= 0.026855: medium_intensity
+F2_VAR_on_ACC_V >= 0.26953: high_intensity
+
+Number of Leaves  : 	3
+
+Size of the tree : 	5

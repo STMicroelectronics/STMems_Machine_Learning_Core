@@ -1,0 +1,6 @@
+F1_MEAN_on_ACC_Z < 0.004883: face_down
+F1_MEAN_on_ACC_Z >= 0.004883: face_up
+
+Number of Leaves  : 	2
+
+Size of the tree : 	3
