@@ -74,7 +74,7 @@ Once these initial settings are confirmed, the user can create a new project for
 
 2. Select a target folder for the new project, select **STM32CubeIDE** as Toolchain/IDE and **Sensortile.box** as Target. Click Ok to proceed.
 
-   <img src="./images/1_algoBuilder_new_project.png" alt="1_algoBuilder_new_project.png" style="zoom:80%;" />
+   <img src="./images/1_algobuilder_new_project.png" alt="1_algobuilder_new_project.png" style="zoom:80%;" />
 
 3. The new project will open up and you will see a block diagram where the "Sensor Hub" node is already placed. If not, you can drag and drop it from the Library menu on the left.
 
