@@ -1,0 +1,47 @@
+F1_MEAN_on_ACC_X <= -0.703544
+|   F1_MEAN_on_ACC_X <= -0.824759
+|   |   F3_MEAN_on_ACC_Z <= 0.13096
+|   |   |   F1_MEAN_on_ACC_X <= -0.993164
+|   |   |   |   F2_MEAN_on_ACC_Y <= 0.0389737
+|   |   |   |   |   F2_MEAN_on_ACC_Y <= -0.129734: SM (6.0)
+|   |   |   |   |   F2_MEAN_on_ACC_Y > -0.129734
+|   |   |   |   |   |   F1_MEAN_on_ACC_X <= -1.02246: SM (2.0)
+|   |   |   |   |   |   F1_MEAN_on_ACC_X > -1.02246
+|   |   |   |   |   |   |   F3_MEAN_on_ACC_Z <= -0.12323
+|   |   |   |   |   |   |   |   F1_MEAN_on_ACC_X <= -1: SM (2.0)
+|   |   |   |   |   |   |   |   F1_MEAN_on_ACC_X > -1
+|   |   |   |   |   |   |   |   |   F2_MEAN_on_ACC_Y <= 0.00797272: SM (1.0)
+|   |   |   |   |   |   |   |   |   F2_MEAN_on_ACC_Y > 0.00797272: SS (2.0)
+|   |   |   |   |   |   |   F3_MEAN_on_ACC_Z > -0.12323
+|   |   |   |   |   |   |   |   F1_MEAN_on_ACC_X <= -1.01563
+|   |   |   |   |   |   |   |   |   F1_MEAN_on_ACC_X <= -1.01758: SS (2.0)
+|   |   |   |   |   |   |   |   |   F1_MEAN_on_ACC_X > -1.01758: SM (1.0)
+|   |   |   |   |   |   |   |   F1_MEAN_on_ACC_X > -1.01563: SS (85.0)
+|   |   |   |   F2_MEAN_on_ACC_Y > 0.0389737: SM (10.0/1.0)
+|   |   |   F1_MEAN_on_ACC_X > -0.993164: SM (57.0/2.0)
+|   |   F3_MEAN_on_ACC_Z > 0.13096: bridge (48.0/14.0)
+|   F1_MEAN_on_ACC_X > -0.824759
+|   |   F3_MEAN_on_ACC_Z <= -0.636719: DFD (65.0)
+|   |   F3_MEAN_on_ACC_Z > -0.636719: TESA (58.0/1.0)
+F1_MEAN_on_ACC_X > -0.703544
+|   F3_MEAN_on_ACC_Z <= -0.805887
+|   |   F1_MEAN_on_ACC_X <= -0.0147898
+|   |   |   F2_MEAN_on_ACC_Y <= -0.122383: tree (46.0/5.0)
+|   |   |   F2_MEAN_on_ACC_Y > -0.122383
+|   |   |   |   F2_MEAN_on_ACC_Y <= 0.0271606: plank (49.0)
+|   |   |   |   F2_MEAN_on_ACC_Y > 0.0271606: cobra (30.0)
+|   |   F1_MEAN_on_ACC_X > -0.0147898
+|   |   |   F2_MEAN_on_ACC_Y <= -0.105957: cobra (17.0)
+|   |   |   F2_MEAN_on_ACC_Y > -0.105957: child (57.0)
+|   F3_MEAN_on_ACC_Z > -0.805887
+|   |   F3_MEAN_on_ACC_Z <= 0.627815
+|   |   |   F1_MEAN_on_ACC_X <= -0.307129: medita (57.0)
+|   |   |   F1_MEAN_on_ACC_X > -0.307129: bow (56.0)
+|   |   F3_MEAN_on_ACC_Z > 0.627815
+|   |   |   F3_MEAN_on_ACC_Z <= 0.956055
+|   |   |   |   F1_MEAN_on_ACC_X <= -0.316895: UP (54.0)
+|   |   |   |   F1_MEAN_on_ACC_X > -0.316895: boat (37.0)
+|   |   |   F3_MEAN_on_ACC_Z > 0.956055: SFB (55.0)
+
+Number of Leaves  : 	23
+Size of the tree : 	45
