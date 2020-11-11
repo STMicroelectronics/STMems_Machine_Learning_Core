@@ -1,7 +1,9 @@
 ## 1 - Introduction
 
 Gym activity recognition is intended as a fitness example for a wearable device, like a smartwatch or a wristband.
-To implement this algorithm with a decision tree, all the data logs have been acquired using the device (LSM6DSOX) mounted on a wristband on the left hand.
+To implement this algorithm with a decision tree, all the data logs have been acquired using the device (LSM6DSOX) mounted on a wristband on the left hand (or right hand).  A limited subset of data logs for the case "left hand" is available [here](./datalogs/). 
+
+Two different configuration files are provided for the two cases: *left* and *right* . 
 
 The activities recognized in this example are: No activity, Bicep curls, Lateral raises, Squats. 
 
