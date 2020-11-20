@@ -208,7 +208,7 @@
                 <Name>Data Type</Name>
                 <Value>0</Value>
                 <Enum>Custom=0,Accelerometer=1,Gyroscope=2,Magnetometer=3</Enum>
-                <Description>Enables easy setting of waveform names and units to apropriate values.</Description>
+                <Description>Enables easy setting of waveform names and units to appropriate values.</Description>
             </Property>
             <Property>
                 <Type>INT</Type>
@@ -333,7 +333,7 @@
                 <Name>Data Type</Name>
                 <Value>0</Value>
                 <Enum>Custom=0,Accelerometer=1,Gyroscope=2,Magnetometer=3,Accelerometer and Gyroscope=4</Enum>
-                <Description>Enables easy setting of value names and units to apropriate values.</Description>
+                <Description>Enables easy setting of value names and units to appropriate values.</Description>
             </Property>
             <Property>
                 <Type>INT</Type>

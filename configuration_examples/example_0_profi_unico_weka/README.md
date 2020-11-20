@@ -52,7 +52,7 @@ Each class to be classified by the decision tree must be characterized by one or
 
 - Micro USB cable to connect the ProfiMEMS motherboard to the PC
 
-  **Note**: Even if ProfiMEMS has been used in this example other plaftorms are supported (see [Getting started with ST development kit and GUI](https://www.st.com/content/ccc/resource/sales_and_marketing/presentation/product_presentation/group0/f6/ab/59/ed/d8/d0/4a/47/MLC_tools_and_GUI/files/MLC_tools_and_GUI.pdf/_jcr_content/translations/en.MLC_tools_and_GUI.pdf)).
+  **Note**: Even if ProfiMEMS has been used in this example other platforms are supported (see [Getting started with ST development kit and GUI](https://www.st.com/content/ccc/resource/sales_and_marketing/presentation/product_presentation/group0/f6/ab/59/ed/d8/d0/4a/47/MLC_tools_and_GUI/files/MLC_tools_and_GUI.pdf/_jcr_content/translations/en.MLC_tools_and_GUI.pdf)).
 
 **Software** needed:
 
