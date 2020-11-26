@@ -105,27 +105,27 @@ You will create a firmware project using *AlgoBuilder*, which can be configured 
 
 ## Run the example with *STWIN* and *HSDatalog*
 
-[HSDatalog]( https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/stsw-stwinkt01.html ) is a high speed data logging command line application for the [STWIN](https://www.st.com/en/evaluation-tools/steval-stwinkt1.html) board.
+[HSDatalog](  https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32-ode-function-pack-sw/fp-sns-datalog1.html  ) is a high speed data logging command line application for the [STWIN](https://www.st.com/en/evaluation-tools/steval-stwinkt1.html) board.
 
 *HSDatalog* also allows configuring ISM330DHCX Machine learning Core and reading the output of the selected algorithm. 
 
 Here all the required steps to run a MLC example through *STWIN* and *HSDatalog*: 
 
-1. Download the latest version of *HSDatalog*, contained in [STSW-STWINKT01]( https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/stsw-stwinkt01.html ) (firmware package for STWIN development kit)
+1. Download the latest version of *HSDatalog*, contained in [FP-SNS-DATALOG1]( https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32-ode-function-pack-sw/fp-sns-datalog1.html  ) ( STM32Cube High Speed Datalog function pack for STWIN evaluation kits )
 
-2. STWIN has to be programmed with **HSDatalog** firmware from *STSW-STWINKT01* package (if already programmed you can skip the following two steps) 
+2. STWIN has to be programmed with **HSDatalog** firmware from *FP-SNS-DATALOG1* package (if already programmed you can skip the following two steps) 
 
    - Put the *STWIN* in **DFU mode** (Direct Firmware Upgrade): disconnect the battery and unplug the USB cable, press and hold the "USR" button, connect the USB cable then release the button while connecting the USB cable.
 
-   - Run [STM32CubeProgrammer](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-programmers/stm32cubeprog.html#overview), select "USB" from the pull-down menu on the right, then press "Connect". Click on the Menu button in the top-left corner. Optionally perform a full chip erase. Select "Erase & Programming", browse to select the **HSDatalog** binary (e.g. \STSW-STWINKT01_V2.0.0\Projects\HSDatalog\Binary\HSDatalog.bin), set the address to 0x8000000, check "Run after Programming", then click "Start Programming".
+   - Run [STM32CubeProgrammer](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-programmers/stm32cubeprog.html#overview), select "USB" from the pull-down menu on the right, then press "Connect". Click on the Menu button in the top-left corner. Optionally perform a full chip erase. Select "Erase & Programming", browse to select the **HSDatalog** binary (e.g. \FP-SNS-DATALOG1_V1.0.0\Projects\HSDatalog\Binary\HSDatalog.bin), set the address to 0x8000000, check "Run after Programming", then click "Start Programming".
 
-3. Load the `.ucf` configuration to ISM330DHCX on *STWIN*, and acquire data logs to see MLC outputs. To do this, a terminal has to be opened, and the "cli_example" application has to be called specifying the .ucf file name and (optionally) the period of the acquisition: 
+3. Load the `.ucf` configuration to ISM330DHCX on *STWIN*, and acquire data logs to see MLC outputs. To do this, a terminal has to be opened, and the "cli_example" application (contained in \FP-SNS-DATALOG1_V1.0.0\Utilities\cli_example\bin) has to be called specifying the .ucf file name and (optionally) the period of the acquisition: 
 
    ````Path
    cli_example.exe -u file_name.ucf -t n_sec
    ````
 
-   Further details on the high-speed data log firmware are available in the user manual [UM2688]( https://www.st.com/resource/en/user_manual/dm00685314-highspeed-datalog-firmware-for-stevalstwinkt1-stmicroelectronics.pdf ).
+   Further details on the high-speed data log function pack are available in the user manual [UM2688](  https://www.st.com/resource/en/user_manual/dm00685314-getting-started-with-the-stm32cube-high-speed-datalog-function-pack-for-stwin-evaluation-kits-stmicroelectronics.pdf  ).
 
 
 
