@@ -1,17 +1,17 @@
 ## 1 - Introduction
 
-The Yoga Pose recognition algorithm described in this example is intended for wearable devices, since all the data logs have been acquired with the device placed on the left leg, with the orientation described in section 2. Fourteen different classes are recognized, as described in section 3.
+The Yoga Pose recognition algorithm described in this example is intended for wearable devices, since all the data logs have been acquired with the device placed on the left leg, with the orientation described in section 2. Fourteen different classes are recognized, as described in section 3. 
 
-The **Machine Learning Core (MLC)** is configured to run at 104 Hz, features are extracted using windows of 52 samples, therefore the Decision Tree classifier output is updated two times per second (104 Hz / 52 = 2 Hz).
+For information on how to integrate this algorithm in the target platform, please follow the instructions available in the README file of the [application_examples]( https://github.com/STMicroelectronics/STMems_Machine_Learning_Core/tree/master/application_examples ) folder. 
 
-Only accelerometer data is used. The full-scale is set to 2 g. Three different features are computed:
+For information on how to create similar algorithms, please follow the instructions provided in the [configuration_examples]( https://github.com/STMicroelectronics/STMems_Machine_Learning_Core/tree/master/configuration_examples ) folder. 
 
-- Mean on accelerometer X axis
-- Mean on accelerometer Y axis
-- Mean on accelerometer Z axis
+The Yoga Pose recognition example is provided also as a complete configuration example, with all the details on the configuration procedure using specific HW/SW tools, and also including data logs: [example_1_sensortilebox_stble_unico]( https://github.com/STMicroelectronics/STMems_Machine_Learning_Core/tree/master/configuration_examples/example_1_sensortilebox_stble_unico ). 
 
 
-## 2 - Device orientation
+## 2 - Sensor configuration and orientation
+
+The accelerometer is configured with ±2 *g* full scale and 104 Hz output data rate.
 
 The [SensorTile.Box](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mksbox1v1.html) is placed on the left leg (see picture below). Other devices can be used as well, provided that the orientation of sensor axes is correct.
 
@@ -24,26 +24,36 @@ The [SensorTile.Box](https://www.st.com/content/st_com/en/products/evaluation-to
 *Source of images: Wikipedia. [Front view](https://commons.wikimedia.org/wiki/File:Tadasana_Yoga-Asana_Nina-Mel.jpg) and [Side view](https://commons.wikimedia.org/wiki/File:Chaturanga-Dandasana_low_Yoga-Asana_Nina-Mel.jpg).*
 
 
-## 3 - Decision Tree output values
+## 3 - Machine Learning Core configuration
 
-The Decision Tree classifiers detects 14 different classes corresponding to 12 different Yoga positions (see picture below) and 2 Non-Yoga position (Standing still and in motion). The output of the Decision Tree classifier is stored in the register MLC0_SRC (address 70h).
+The **Machine Learning Core (MLC)** is configured to run at 104 Hz, computing features on windows of 52 samples, therefore the Decision Tree classifier output is updated two times per second (104 Hz / 52 = 2 Hz).
 
-This is the list of values that the MLC0_SRC register can have and the corresponding class label:
+Three different features are computed:
 
-- 0 = Boat Pose
-- 1 = Bow Pose
-- 2 = Bridge
-- 3 = Child's Pose
-- 4 = Cobra's Pose
-- 5 = Downward-Facing Dog
-- 6 = Meditation Pose
-- 7 = Plank
-- 8 = Seated Forward Bend
-- 9 = Standing in Motion
-- 10 = Standing Still
-- 11 = The Extended Side Angle
-- 12 = The Tree
-- 13 =  Upward Plank
+- Mean on accelerometer X axis
+- Mean on accelerometer Y axis
+- Mean on accelerometer Z axis
+
+One decision tree with around 20 nodes has been configured to detect the different classes.
+A meta-classifier has not been used.  
+
+The Decision Tree classifiers detects 14 different classes corresponding to 12 different Yoga positions (see picture below) and 2 Non-Yoga position (Standing still and in motion). The output of the Decision Tree classifier is stored in the register MLC0_SRC (address 70h).  
+
+- MLC0_SRC (70h) register values
+  - 0 = Boat Pose
+  - 1 = Bow Pose
+  - 2 = Bridge
+  - 3 = Child's Pose
+  - 4 = Cobra's Pose
+  - 5 = Downward-Facing Dog
+  - 6 = Meditation Pose
+  - 7 = Plank
+  - 8 = Seated Forward Bend
+  - 9 = Standing in Motion
+  - 10 = Standing Still
+  - 11 = The Extended Side Angle
+  - 12 = The Tree
+  - 13 =  Upward Plank
 
 ![SensorTileBoxYogaPoses](./SensorTileBoxYogaPoses.jpg)
 
@@ -52,7 +62,7 @@ This is the list of values that the MLC0_SRC register can have and the correspon
 
 ## 4 - Interrupts
 
-Whenever the Decision Tree output is updated (MLC0_SRC register at address 70h), an interrupt is generated (pulse on INT1 pin), that is two times per second in this example configuration. 
+The configuration generates an interrupt (pulsed and active high) on the INT1 pin every time the register MLC0_SRC (70h) is updated with a new value. The duration of the interrupt pulse is 9.6 ms in this configuration.
 
 ------
 
