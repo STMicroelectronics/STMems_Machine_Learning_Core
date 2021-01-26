@@ -3,7 +3,8 @@
 Head gestures configuration is intended as an example for headphone applications.
 To implement this algorithm with a decision tree, all the data logs have been acquired using the device (LSM6DSOX) mounted on the headphone.
 
-The decision tree allows recognizing five different gestures including nod, shake, stationary, swing, walk.
+The decision tree allows recognizing five different gestures including nod, shake, stationary, swing, walk. 
+A limited subset of data logs for this example is available [here](./datalogs/).
 
 For information on how to integrate this algorithm in the target platform, please follow the instructions available in the README file of the [application_examples]( https://github.com/STMicroelectronics/STMems_Machine_Learning_Core/tree/master/application_examples ) folder. 
 
