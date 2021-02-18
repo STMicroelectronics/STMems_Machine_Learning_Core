@@ -142,7 +142,7 @@ The user can now move to the **Configuration** tab of the current window. Here t
 
 Now the user has to select the feature(s) used by the MLC to discriminate between the different scenarios. In this case, the **Peak to Peak of ACC_X** (acceleration X axis) is sufficient and should be the only selected feature before continuing with the tutorial. To help the user in this making this decision, it is useful to plot the sensor data in a graphical way with an external software (e.g. Excel, Matlab, LabVIEW, etc...):
 
-<img src="./images/2_data_analysis.png" alt="2_mlc_imported_data.png" style="zoom:100%;" />
+<img src="./images/2_data_analysis.png" alt="2_data_analysis.png" style="zoom:100%;" />
 
 It is clear how the peak-to-peak value of the signal changes according to the fan rack mode. In this case, the most relevant axis is the X axis but it may vary (depends from board orientation, fan rack shape, type of failure, double-sided tape used, etc...). For any further info regarding the creation of the decision tree and the choice of features, the user can check [DT0139](https://www.st.com/resource/en/design_tip/dm00747046-decision-tree-generation-stmicroelectronics.pdf), a design tip document for Decision Tree generation.
 
@@ -202,7 +202,7 @@ The user can close Unico-GUI and proceed with the transfer of the UCF file on th
 
 It is possible to see how, by **enabling the MLC switch, the "Load Configuration" is enabled, too**. The user has to click on it and proceed to select the UCF file previously transferred. It is also necessary to set FS and ODR of the Accelerometer in the same way as we did during the previous acquisition (Full Scale=2g, ODR=104Hz).
 
-<img src="./images/5_mlc_configuration.png" alt="5_mlc_configuration" style="zoom:80%;" />
+<img src="./images/5_mlc_configuration.png" alt="5_mlc_configuration.png" style="zoom:80%;" />
 
 To check the outcome of the MLC in real-time, the user has to start an acquisition. Once the acquisition is started, by clicking the menu button in the top left corner it will find the "Machine Learning Core" menu.
 

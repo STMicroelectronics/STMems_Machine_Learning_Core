@@ -12,6 +12,7 @@ Each folder contains a different configuration procedure depending on the softwa
 | *example_1* | [LSM6DSOX](https://www.st.com/content/st_com/en/products/mems-and-sensors/inemo-inertial-modules/lsm6dsox.html) | [SensorTile.box](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mksbox1v1.html) | [STBLESensor](https://www.st.com/content/st_com/en/products/embedded-software/wireless-connectivity-software/stblesensor.html) | [Unico GUI](https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/unico-gui.html) | Yoga pose recognition                  |
 | *example_2* | [LSM6DSOX](https://www.st.com/content/st_com/en/products/mems-and-sensors/inemo-inertial-modules/lsm6dsox.html) | [SensorTile.box](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mksbox1v1.html) | [AlgoBuilder GUI](https://www.st.com/content/st_com/en/products/embedded-software/mems-and-sensors-software/inemo-engine-software-libraries/algobuilder.html) | [Unico GUI](https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/unico-gui.html) | Motion intensity                       |
 | *example_3* | [LSM6DSRX](https://www.st.com/en/mems-and-sensors/lsm6dsrx.html) | [STM32 Nucleo ](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-nucleo-boards.html) | [Unicleo GUI](https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/unicleo-gui.html) | [Unico GUI](https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/unico-gui.html) / MATLAB | Face-up / Face-down + Motion intensity |
+| *example_4* | [ISM330DHCX](https://www.st.com/en/mems-and-sensors/ism330dhcx.html) | [STWIN](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html) | [STBLESensor](https://www.st.com/content/st_com/en/products/embedded-software/wireless-connectivity-software/stblesensor.html) | [Unico GUI](https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/unico-gui.html) | Fan rack monitoring                    |
 
 
 
@@ -23,4 +24,4 @@ Each folder contains a different configuration procedure depending on the softwa
 
 **More information: [http://www.st.com](http://st.com/MEMS)**
 
-**Copyright © 2020 STMicroelectronics**
+**Copyright © 2021 STMicroelectronics**
