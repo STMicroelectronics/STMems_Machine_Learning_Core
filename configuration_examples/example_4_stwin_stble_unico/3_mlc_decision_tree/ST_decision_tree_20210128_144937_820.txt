@@ -1,0 +1,38 @@
+F1_PeakToPeak_on_ACC_X <= 0.00311279: fan_off (56.0)
+F1_PeakToPeak_on_ACC_X > 0.00311279
+|   F1_PeakToPeak_on_ACC_X <= 0.0290985: fan_on (56.0)
+|   F1_PeakToPeak_on_ACC_X > 0.0290985: fan_fault (47.0)
+
+Number of Leaves  : 	3
+Size of the tree : 	5
+
+
+class:
+ => fan_off, fan_on, fan_fault, 
+features:
+ => F1_PeakToPeak_on_ACC_X, 
+
+
+Mean absolute error	1
+Root mean squared error	1
+ ======= Whole data training with Confidence Factor: 0.9 ========= 
+
+
+===== Confusion Matrix =====
+         	fan_off  	fan_on   	fan_fault	<-- classified as
+fan_off  	56	0	0	
+fan_on   	0	56	0	
+fan_fault	0	0	47	
+
+Total Number of Instances        : 159
+Correctly Classified Instances   : 159
+Incorrectly Classified Instances : 0
+Kappa Statistic: 0.335469
+Accuracy: 100%
+
+Report  :	precision	recall	support	
+fan_off  	1    	1	 56
+fan_on   	1    	1	 56
+fan_fault	1    	1	 47
+
+avg/total	1    	1	 159

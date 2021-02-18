@@ -1,0 +1,704 @@
+{
+    "UUIDAcquisition": "341eceff-1f60-4052-95bf-83cc190e2897",
+    "JSONVersion": "1.0.0",
+    "device": {
+        "deviceInfo": {
+            "serialNumber": "00080016334E50132033334B",
+            "alias": "STWIN_001",
+            "partNumber": "STEVAL-STWINKT1",
+            "URL": "www.st.com\/stwin",
+            "fwName": "FP-SNS-DATALOG1",
+            "fwVersion": "1.0.0",
+            "dataFileExt": ".dat",
+            "dataFileFormat": "HSD_1.0.0",
+            "nSensor": 9
+        },
+        "sensor": [
+            {
+                "id": 0,
+                "name": "IIS3DWB",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "ACC",
+                            "dimensions": 3,
+                            "dimensionsLabel": [
+                                "x",
+                                "y",
+                                "z"
+                            ],
+                            "unit": "g",
+                            "dataType": "int16_t",
+                            "FS": [
+                                2,
+                                4,
+                                8,
+                                16
+                            ],
+                            "ODR": [
+                                26667
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 26667,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 16,
+                            "sensitivity": 0.000488,
+                            "isActive": false,
+                            "samplesPerTs": 1000,
+                            "usbDataPacketSize": 3000,
+                            "sdWriteBufferSize": 32768,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 1,
+                "name": "HTS221",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "TEMP",
+                            "dimensions": 1,
+                            "dimensionsLabel": [
+                                "tem"
+                            ],
+                            "unit": "Celsius",
+                            "dataType": "float",
+                            "FS": [
+                                120
+                            ],
+                            "ODR": [
+                                1,
+                                7,
+                                12.5
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        },
+                        {
+                            "id": 1,
+                            "sensorType": "HUM",
+                            "dimensions": 1,
+                            "dimensionsLabel": [
+                                "hum"
+                            ],
+                            "unit": "%",
+                            "dataType": "float",
+                            "FS": [
+                                100
+                            ],
+                            "ODR": [
+                                1,
+                                7,
+                                12.5
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 12.5,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 120,
+                            "sensitivity": 1,
+                            "isActive": false,
+                            "samplesPerTs": 50,
+                            "usbDataPacketSize": 16,
+                            "sdWriteBufferSize": 256,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        },
+                        {
+                            "ODR": 12.5,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 100,
+                            "sensitivity": 1,
+                            "isActive": false,
+                            "samplesPerTs": 50,
+                            "usbDataPacketSize": 16,
+                            "sdWriteBufferSize": 256,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 2,
+                "name": "IIS2DH",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "ACC",
+                            "dimensions": 3,
+                            "dimensionsLabel": [
+                                "x",
+                                "y",
+                                "z"
+                            ],
+                            "unit": "g",
+                            "dataType": "int16_t",
+                            "FS": [
+                                2,
+                                4,
+                                8,
+                                16
+                            ],
+                            "ODR": [
+                                1,
+                                10,
+                                25,
+                                50,
+                                100,
+                                200,
+                                400,
+                                1344
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 1344,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 16,
+                            "sensitivity": 0.00075,
+                            "isActive": false,
+                            "samplesPerTs": 1000,
+                            "usbDataPacketSize": 2400,
+                            "sdWriteBufferSize": 8192,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 3,
+                "name": "IIS2MDC",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "MAG",
+                            "dimensions": 3,
+                            "dimensionsLabel": [
+                                "x",
+                                "y",
+                                "z"
+                            ],
+                            "unit": "gauss",
+                            "dataType": "int16_t",
+                            "FS": [
+                                50
+                            ],
+                            "ODR": [
+                                10,
+                                20,
+                                50,
+                                100
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 100,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 50,
+                            "sensitivity": 0.0015,
+                            "isActive": false,
+                            "samplesPerTs": 100,
+                            "usbDataPacketSize": 600,
+                            "sdWriteBufferSize": 512,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 4,
+                "name": "IMP34DT05",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "MIC",
+                            "dimensions": 1,
+                            "dimensionsLabel": [
+                                "aud"
+                            ],
+                            "unit": "Waveform",
+                            "dataType": "int16_t",
+                            "FS": [
+                                122.5
+                            ],
+                            "ODR": [
+                                48000
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 48000,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 122.5,
+                            "sensitivity": 1,
+                            "isActive": false,
+                            "samplesPerTs": 1000,
+                            "usbDataPacketSize": 4096,
+                            "sdWriteBufferSize": 32768,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 5,
+                "name": "ISM330DHCX",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "ACC",
+                            "dimensions": 3,
+                            "dimensionsLabel": [
+                                "x",
+                                "y",
+                                "z"
+                            ],
+                            "unit": "g",
+                            "dataType": "int16_t",
+                            "FS": [
+                                2,
+                                4,
+                                8,
+                                16
+                            ],
+                            "ODR": [
+                                12.5,
+                                26,
+                                52,
+                                104,
+                                208,
+                                417,
+                                833,
+                                1667,
+                                3333,
+                                6667
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        },
+                        {
+                            "id": 1,
+                            "sensorType": "GYRO",
+                            "dimensions": 3,
+                            "dimensionsLabel": [
+                                "x",
+                                "y",
+                                "z"
+                            ],
+                            "unit": "mdps",
+                            "dataType": "int16_t",
+                            "FS": [
+                                125,
+                                250,
+                                500,
+                                1000,
+                                2000,
+                                4000
+                            ],
+                            "ODR": [
+                                12.5,
+                                26,
+                                52,
+                                104,
+                                208,
+                                417,
+                                833,
+                                1667,
+                                3333,
+                                6667
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        },
+                        {
+                            "id": 2,
+                            "sensorType": "MLC",
+                            "dimensions": 8,
+                            "dimensionsLabel": [
+                                "1",
+                                "2",
+                                "3",
+                                "4",
+                                "5",
+                                "6",
+                                "7",
+                                "8"
+                            ],
+                            "unit": "out",
+                            "dataType": "int8_t",
+                            "FS": [],
+                            "ODR": [
+                                12.5,
+                                26,
+                                52,
+                                104
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 104,
+                            "ODRMeasured": 104.4848175,
+                            "initialOffset": 1.156168,
+                            "FS": 2,
+                            "sensitivity": 6.1e-05,
+                            "isActive": true,
+                            "samplesPerTs": 1000,
+                            "usbDataPacketSize": 2048,
+                            "sdWriteBufferSize": 16384,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        },
+                        {
+                            "ODR": 104,
+                            "ODRMeasured": 104.4848175,
+                            "initialOffset": 1.156168,
+                            "FS": 250,
+                            "sensitivity": 8.75,
+                            "isActive": true,
+                            "samplesPerTs": 1000,
+                            "usbDataPacketSize": 2048,
+                            "sdWriteBufferSize": 16384,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        },
+                        {
+                            "ODR": 0,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 0,
+                            "sensitivity": 1,
+                            "isActive": false,
+                            "samplesPerTs": 1,
+                            "usbDataPacketSize": 16,
+                            "sdWriteBufferSize": 1024,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 6,
+                "name": "LPS22HH",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "PRESS",
+                            "dimensions": 1,
+                            "dimensionsLabel": [
+                                "prs"
+                            ],
+                            "unit": "hPa",
+                            "dataType": "float",
+                            "FS": [
+                                1260
+                            ],
+                            "ODR": [
+                                1,
+                                10,
+                                25,
+                                50,
+                                75,
+                                100,
+                                200
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        },
+                        {
+                            "id": 1,
+                            "sensorType": "TEMP",
+                            "dimensions": 1,
+                            "dimensionsLabel": [
+                                "tem"
+                            ],
+                            "unit": "Celsius",
+                            "dataType": "float",
+                            "FS": [
+                                85
+                            ],
+                            "ODR": [
+                                1,
+                                10,
+                                25,
+                                50,
+                                75,
+                                100,
+                                200
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 200,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 1260,
+                            "sensitivity": 1,
+                            "isActive": false,
+                            "samplesPerTs": 200,
+                            "usbDataPacketSize": 1600,
+                            "sdWriteBufferSize": 1024,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        },
+                        {
+                            "ODR": 200,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 85,
+                            "sensitivity": 1,
+                            "isActive": false,
+                            "samplesPerTs": 200,
+                            "usbDataPacketSize": 1600,
+                            "sdWriteBufferSize": 1024,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 7,
+                "name": "MP23ABS1",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "MIC",
+                            "dimensions": 1,
+                            "dimensionsLabel": [
+                                "aud"
+                            ],
+                            "unit": "Waveform",
+                            "dataType": "int16_t",
+                            "FS": [
+                                130
+                            ],
+                            "ODR": [
+                                192000
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 192000,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 130,
+                            "sensitivity": 1,
+                            "isActive": false,
+                            "samplesPerTs": 1000,
+                            "usbDataPacketSize": 4096,
+                            "sdWriteBufferSize": 98304,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 8,
+                "name": "STTS751",
+                "sensorDescriptor": {
+                    "subSensorDescriptor": [
+                        {
+                            "id": 0,
+                            "sensorType": "TEMP",
+                            "dimensions": 1,
+                            "dimensionsLabel": [
+                                "tem"
+                            ],
+                            "unit": "Celsius",
+                            "dataType": "float",
+                            "FS": [
+                                100
+                            ],
+                            "ODR": [
+                                1,
+                                2,
+                                4
+                            ],
+                            "samplesPerTs": {
+                                "min": 0,
+                                "max": 1000,
+                                "dataType": "int16_t"
+                            }
+                        }
+                    ]
+                },
+                "sensorStatus": {
+                    "subSensorStatus": [
+                        {
+                            "ODR": 4,
+                            "ODRMeasured": 0,
+                            "initialOffset": 0,
+                            "FS": 100,
+                            "sensitivity": 1,
+                            "isActive": false,
+                            "samplesPerTs": 20,
+                            "usbDataPacketSize": 16,
+                            "sdWriteBufferSize": 256,
+                            "wifiDataPacketSize": 0,
+                            "comChannelNumber": -1
+                        }
+                    ]
+                }
+            }
+        ],
+        "tagConfig": {
+            "maxTagsPerAcq": 100,
+            "swTags": [
+                {
+                    "id": 0,
+                    "label": "SW_TAG_0"
+                },
+                {
+                    "id": 1,
+                    "label": "SW_TAG_1"
+                },
+                {
+                    "id": 2,
+                    "label": "SW_TAG_2"
+                },
+                {
+                    "id": 3,
+                    "label": "SW_TAG_3"
+                },
+                {
+                    "id": 4,
+                    "label": "SW_TAG_4"
+                }
+            ],
+            "hwTags": [
+                {
+                    "id": 0,
+                    "pinDesc": "",
+                    "label": "HW_TAG_0",
+                    "enabled": false
+                },
+                {
+                    "id": 1,
+                    "pinDesc": "",
+                    "label": "HW_TAG_1",
+                    "enabled": false
+                },
+                {
+                    "id": 2,
+                    "pinDesc": "",
+                    "label": "HW_TAG_2",
+                    "enabled": false
+                },
+                {
+                    "id": 3,
+                    "pinDesc": "",
+                    "label": "HW_TAG_3",
+                    "enabled": false
+                },
+                {
+                    "id": 4,
+                    "pinDesc": "",
+                    "label": "HW_TAG_4",
+                    "enabled": false
+                }
+            ]
+        }
+    }
+}
