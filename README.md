@@ -8,7 +8,7 @@ Machine Learning processing is obtained through *decision-tree logic*. A decisio
 
 The results of the decision tree can be read from the application processor at any time. Furthermore, there is the possibility to **generate an interrupt** for every change in the result in the decision tree.
 
-For more information about MLC, please explore the dedicated page available on the ST website:  [Explore Machine Learning Core in MEMS sensors](https://www.st.com/content/st_com/en/campaigns/machine-learning-core.html).
+For more information about MLC, please explore the dedicated page available on the ST website: [MEMS Sensors Ecosystem for Machine Learning](https://www.st.com/content/st_com/en/MEMS-Sensors-Ecosystem-for-Machine-Learning.html).
 
 
 ## Repository overview
@@ -23,4 +23,4 @@ This repository is structured as follows:
 
 **More information: [http://www.st.com](http://st.com/MEMS)**
 
-**Copyright © 2020 STMicroelectronics**
+**Copyright © 2021 STMicroelectronics**
