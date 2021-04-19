@@ -1,0 +1,22 @@
+@relation 'MLC'
+
+@attribute F1_VAR_on_MAG_V numeric
+@attribute class {no_magnetic_variation, magnetic_variation}
+
+@data
+6.10352e-05, no_magnetic_variation
+1.52588e-05, no_magnetic_variation
+0.00134277, no_magnetic_variation
+0.000305176, no_magnetic_variation
+0.00250244, no_magnetic_variation
+0.00604248, no_magnetic_variation
+0.00390625, no_magnetic_variation
+0.680176, magnetic_variation
+0.302002, magnetic_variation
+0.702148, magnetic_variation
+3.1875, magnetic_variation
+0.764648, magnetic_variation
+0.0671387, magnetic_variation
+0.0183105, magnetic_variation
+0.010498, magnetic_variation
+0.0112305, magnetic_variation

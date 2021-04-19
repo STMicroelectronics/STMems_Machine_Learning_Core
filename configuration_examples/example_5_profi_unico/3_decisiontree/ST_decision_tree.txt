@@ -1,0 +1,34 @@
+F1_VAR_on_MAG_V <= 0.00604248: no_magnetic_variation (7.0)
+F1_VAR_on_MAG_V > 0.00604248: magnetic_variation (9.0)
+
+Number of Leaves  : 	2
+Size of the tree : 	3
+
+
+class:
+ => no_magnetic_variation, magnetic_variation, 
+features:
+ => F1_VAR_on_MAG_V, 
+
+
+Mean absolute error	0.933333
+Root mean squared error	0.938083
+ ======= Whole data training with Confidence Factor: 0.9 ========= 
+
+
+===== Confusion Matrix =====
+         	no_magne	magnetic	<-- classified as
+no_magne	7	0	
+magnetic	0	9	
+
+Total Number of Instances        : 16
+Correctly Classified Instances   : 16
+Incorrectly Classified Instances : 0
+Kappa Statistic: 0.507812
+Accuracy: 100%
+
+Report  :	precision	recall	support	
+no_magne	1    	1	 7
+magnetic	1    	1	 9
+
+avg/total	1    	1	 16
