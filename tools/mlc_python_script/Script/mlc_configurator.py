@@ -1,9 +1,9 @@
 import os
 import subprocess
-current_directory = "./"
 mlc_app = "C:/Program Files (x86)/STMicroelectronics/Unico-GUI/unico.exe"  ## Windows
 
 class mlc_configurator:
+	
     class mlc_feature(object):
         def __init__(self, name=None, input=None, threshold=0, signed=True):
             self.name = name
@@ -30,7 +30,7 @@ class mlc_configurator:
             self.coef_gain = coef_gain
 
     def get_devices(): 
-        device_list = ["LSM6DSOX", "LSM6DSRX", "ISM330DHCX"] 
+        device_list = ["LSM6DSOX", "LSM6DSRX", "ISM330DHCX", "LSM6DSO32X", "IIS2ICLX"] 
         return device_list
 
     def get_mlc_odr( device_name ): 
@@ -38,35 +38,70 @@ class mlc_configurator:
         return mlc_odr
 
     def get_mlc_input_type( device_name ): 
-        mlc_input_type = ["accelerometer_only", "accelerometer+gyroscope"]
+        if device_name == "IIS2ICLX":
+            mlc_input_type = ["accelerometer_only"]
+        else: 
+            mlc_input_type = ["accelerometer_only", "accelerometer+gyroscope"]
         return mlc_input_type
 
-    def get_mlc_inputs( input_type ): 
+    def get_mlc_inputs( device_name, input_type ): 
         mlc_inputs = []
         if input_type == "accelerometer_only":
-            mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2"]
+            if device_name == "IIS2ICLX":
+                mlc_inputs = ["Acc_X", "Acc_Y", "Acc_V", "Acc_V2"]
+            else:
+                mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2"]
         elif input_type == "accelerometer+gyroscope":
             mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2", 
                           "Gyr_X", "Gyr_Y", "Gyr_Z", "Gyr_V", "Gyr_V2"]
         return mlc_inputs
 
     def get_accelerometer_fs( device_name ):
-        accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
+        if device_name == "LSM6DSOX":
+            accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
+        if device_name == "LSM6DSO32X":
+            accelerometer_fs = ["4 g", "8 g", "16 g", "32 g"]
+        elif device_name == "IIS2ICLX":
+            accelerometer_fs = ["0.5 g", "1 g", "2 g", "3 g"]
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX":
+            accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
+        else:
+            print("ERROR: device \"" + device_name + "\" not supported")
         return accelerometer_fs
 
     def get_accelerometer_odr( device_name ):
-        accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
+        if device_name == "LSM6DSOX":
+            accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
+        elif device_name == "LSM6DSO32X":
+            accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
+        elif device_name == "IIS2ICLX":
+            accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz"]
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
+            accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
+        else:
+            print("ERROR: device \"" + device_name + "\" not supported")
         return accelerometer_odr
 
     def get_gyroscope_fs( device_name ):
         if device_name == "LSM6DSOX":
             gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps"]
-        else: 
+        elif device_name == "LSM6DSO32X":
+            gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps"]
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
             gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps", "4000 dps"]
+        else:
+            print("ERROR: device \"" + device_name + "\" not supported")
         return gyroscope_fs
 
     def get_gyroscope_odr( device_name ):
-        gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
+        if device_name == "LSM6DSOX":
+            gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
+        elif device_name == "LSM6DSO32X":
+            gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
+            gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
+        else:
+            print("ERROR: device \"" + device_name + "\" not supported")
         return gyroscope_odr
 
     def get_filter_names( input_type ):
@@ -117,7 +152,8 @@ class mlc_configurator:
             print("ERROR: device \"" + device_name + "\" not supported")
             return
 
-        config_for_ARFF_gen_filename = os.path.join(current_directory, "ARFF_generation.txt")
+        prj_directory = os.path.dirname(os.path.abspath(arff_filename))
+        config_for_ARFF_gen_filename = os.path.join(prj_directory, "ARFF_generation.txt")
 
         with open(config_for_ARFF_gen_filename, "w") as f:
             for i in range(len(datalogs)):
@@ -147,6 +183,9 @@ class mlc_configurator:
 
             # Filters
             for i in range(len(filters_list)):
+                if filters_list[i].name not in mlc_configurator.get_filter_names(input_type):
+                    print("ERROR: filter \"" + filters_list[i].name + "\" not supported")
+                    return
                 f.write("<"+ filters_list[i].filter_id +">" + filters_list[i].name + "\n")
                 if "BP" in filters_list[i].name:
                     f.write("<coefficients>" + 
@@ -169,6 +208,13 @@ class mlc_configurator:
 
             # Features
             for i in range(len(features_list)):
+                if features_list[i].name not in mlc_configurator.get_feature_names():
+                    print("ERROR: feature \"" + features_list[i].name + "\" not supported")
+                    return
+                if features_list[i].input not in mlc_configurator.get_mlc_inputs(device_name, input_type):
+                    if "_filter_" not in features_list[i].input:
+                        print("ERROR: feature input \"" + features_list[i].input + "\" not supported")
+                        return
                 f.write("<feature>" + features_list[i].name + "_" + features_list[i].input + "\n")
                 if "ZERO_CROSSING" in features_list[i].name or "PEAK_DETECTOR" in features_list[i].name:
                     f.write("<threshold>" + str(features_list[i].threshold) + "\n") 
@@ -178,7 +224,7 @@ class mlc_configurator:
             f.close()
 
             print("\nCalling MLC app for features computation and ARFF generation...")
-            args = [mlc_app, "-MLC_script", config_for_ARFF_gen_filename]
+            args = [mlc_app, "-" + device_name, "-MLC_script", config_for_ARFF_gen_filename]
             mlc_app_ret_value = subprocess.call(args)
             if (mlc_app_ret_value == 0):
                 print("\nARFF generated successfully: " + arff_filename)
@@ -191,20 +237,24 @@ class mlc_configurator:
             else:
                 print("\nERROR: ", mlc_app_ret_value)
 
-    def ucf_generator( arff_filename, 
+    def ucf_generator(  device_name, 
+	                   arff_filename, 
                        dectree_filenames,
                        result_names, 
                        result_values, 
                        metaclassifier_values, 
                        ucf_filename ):
 
-        config_for_ARFF_gen_filename = os.path.join(current_directory, "ARFF_generation.txt")
-        config_for_UCF_gen_filename = os.path.join(current_directory, "UCF_generation.txt")
+        prj_directory = os.path.dirname(os.path.abspath(arff_filename))
+        config_for_ARFF_gen_filename = os.path.join(prj_directory, "ARFF_generation.txt")
+        config_for_UCF_gen_filename = os.path.join(prj_directory, "UCF_generation.txt")
 
         for i in range(0,8): 
             if not result_names[i]:
                 break
         n_decision_trees = i
+        if n_decision_trees != len(dectree_filenames): 
+           print("\nERROR: wrong number of decision trees detected. Please check result_names and dectree_filenames")
 
         results_DT1 = result_names[0]
         results_DT2 = result_names[1]
@@ -252,7 +302,7 @@ class mlc_configurator:
                   with open(arff_filename) as arff_file:
                     lines_of_arff = arff_file.readlines()
                     for line_of_arff in lines_of_arff:
-                      if line_of_arff.startswith( '@attribute F' ):
+                      if line_of_arff.startswith( '@attribute F' ) or line_of_arff.startswith('@ATTRIBUTE F'):
                         line_of_arff_splitted = line_of_arff.split();
                         output.write(line_of_arff_splitted[1] + '\n')
 
@@ -282,7 +332,14 @@ class mlc_configurator:
         result_values_DT6_string = ""
         result_values_DT7_string = ""
         result_values_DT8_string = ""
-        for i in range(0,15):
+        max_DT_classes = 256
+        if device_name == "LSM6DSOX" or device_name == "LSM6DSO32X":
+            max_DT_classes = 16
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "IIS2ICLX":
+            max_DT_classes = 256
+        else:
+            print("ERROR: device \"" + device_name + "\" not supported")
+        for i in range(0, max_DT_classes):
           if i > 0:
             result_values_DT1_string += " ; "
             result_values_DT2_string += " ; "
@@ -351,7 +408,7 @@ class mlc_configurator:
         f.close()
 
         print("\nCalling MLC app for .ucf file generation...")
-        args = [mlc_app, "-MLC_script", config_for_UCF_gen_filename]
+        args = [mlc_app, "-" + device_name, "-MLC_script", config_for_UCF_gen_filename]
         mlc_app_ret_value = subprocess.call(args)
         if (mlc_app_ret_value == 0):
             print("\n.ucf file generated successfully: " + ucf_filename)
