@@ -266,7 +266,7 @@ int length = sizeof(tilt_sensing_DT) / sizeof(ucf_line_t); // get the length of 
 
 for (i = 0; i < length; i++)
 {
-  write(fsm_mlc_config[i].address, fsm_mlc_config[i].data); // write the defined value to the corresponding address 
+  write(tilt_sensing_DT[i].address, tilt_sensing_DT[i].data); // write the defined value to the corresponding address 
 }
 ```
 
