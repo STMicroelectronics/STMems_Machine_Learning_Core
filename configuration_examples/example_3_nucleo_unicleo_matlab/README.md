@@ -173,7 +173,20 @@ Note:
   - [features_DT1.arff](./2_features/features_DT1.arff), containing all the classes related to motion intensity detection;
   - [features_DT2.arff](./2_features/features_DT2.arff), containing all the classes related to face-up / face-down detection.
   
-  Newer versions of Unico (e.g. starting from v9.9.0.0) do not require this manual step anymore, the subsets of .arff are automatically created.
+  Newer versions of Unico (e.g. starting from v9.9.0.0) do not require this manual step anymore, the subsets of .arff are automatically created. 
+  
+- When two or more decision trees are configured, Unico asks to specify the list of labels
+  for each tree, separated by semicolon. The corresponding numeric output is the position index (starting from 0). Dummy labels can be introduced in order to assign a different numeric output to a given label, as described in the following example:
+
+  - Decision Tree #1 with numeric output described above (values 0, 1, 2)
+
+    - Input for Unico:   *stationary; medium_intensity; high_intensity*
+
+  - *Decision* Tree #1 with different numeric output (values 0, 4, 8) 
+
+    - Input for Unico:   *stationary; unused; unused; unused; medium_intensity; unused; unused; unused; high_intensity*
+
+    This second case (values 0, 4, 8) allows separating classes in different meta-classifier sub-groups. 
 
 # 3. Design the Decision Tree Classifier
 
