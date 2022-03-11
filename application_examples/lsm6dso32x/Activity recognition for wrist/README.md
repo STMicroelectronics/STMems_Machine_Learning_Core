@@ -13,9 +13,7 @@ For information on how to create similar algorithms, please follow the instructi
 
 The accelerometer is configured with ±8 *g* full scale and 26 Hz output data rate.
 
-Sensor orientation is set as for the ENU convention (X toward fingers, Y front, Z up) in order to properly work.
-
-
+Any sensor orientation is allowed for this algorithm.
 
 
 ## 3 - Machine Learning Core configuration
@@ -39,4 +37,4 @@ The configuration generates an interrupt (pulsed and active high) on the INT1 pi
 
 **More information: [http://www.st.com](http://st.com/MEMS)**
 
-**Copyright © 2021 STMicroelectronics**
+**Copyright © 2022 STMicroelectronics**
