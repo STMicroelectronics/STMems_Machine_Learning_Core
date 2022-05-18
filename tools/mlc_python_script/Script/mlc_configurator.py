@@ -1,15 +1,15 @@
 import os
 import subprocess
-mlc_app = "C:/Program Files (x86)/STMicroelectronics/Unico-GUI/unico.exe"  ## Windows
+from mlc_script_log import *
+import external_tools
 
 class mlc_configurator:
 	
     class mlc_feature(object):
-        def __init__(self, name=None, input=None, threshold=0, signed=True):
+        def __init__(self, name=None, input=None, threshold=0):
             self.name = name
             self.input = input
             self.threshold = threshold
-            self.signed = signed
             
     class mlc_filter: 
         def __init__(self, filter_id="filter_1", 
@@ -66,7 +66,7 @@ class mlc_configurator:
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX":
             accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
         else:
-            print("ERROR: device \"" + device_name + "\" not supported")
+            logging.error("ERROR: device \"" + device_name + "\" not supported")
         return accelerometer_fs
 
     def get_accelerometer_odr( device_name ):
@@ -79,7 +79,7 @@ class mlc_configurator:
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
             accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
         else:
-            print("ERROR: device \"" + device_name + "\" not supported")
+            logging.error("ERROR: device \"" + device_name + "\" not supported")
         return accelerometer_odr
 
     def get_gyroscope_fs( device_name ):
@@ -90,7 +90,7 @@ class mlc_configurator:
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
             gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps", "4000 dps"]
         else:
-            print("ERROR: device \"" + device_name + "\" not supported")
+            logging.error("ERROR: device \"" + device_name + "\" not supported")
         return gyroscope_fs
 
     def get_gyroscope_odr( device_name ):
@@ -101,7 +101,7 @@ class mlc_configurator:
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
             gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
         else:
-            print("ERROR: device \"" + device_name + "\" not supported")
+            logging.error("ERROR: device \"" + device_name + "\" not supported")
         return gyroscope_odr
 
     def get_filter_names( input_type ):
@@ -120,9 +120,12 @@ class mlc_configurator:
 
     def get_feature_names():
         feature_names = ["MEAN", 
+                         "ABS_MEAN",
                          "VARIANCE", 
+                         "ABS_VARIANCE",
                          "ENERGY", 
                          "PEAK_TO_PEAK", 
+                         "ABS_PEAK_TO_PEAK",
                          "ZERO_CROSSING", 
                          "POSITIVE_ZERO_CROSSING", 
                          "NEGATIVE_ZERO_CROSSING", 
@@ -130,7 +133,9 @@ class mlc_configurator:
                          "POSITIVE_PEAK_DETECTOR", 
                          "NEGATIVE_PEAK_DETECTOR", 
                          "MINIMUM", 
-                         "MAXIMUM"]
+                         "ABS_MINIMUM",
+                         "MAXIMUM",
+                         "ABS_MAXIMUM"]
         return feature_names
 
     def arff_generator( device_name, 
@@ -146,21 +151,25 @@ class mlc_configurator:
                        window_length, 
                        filters_list, 
                        features_list, 
-                       arff_filename ):
-
+                       arff_filename,
+                       current_directory ):
+                       
         if device_name not in mlc_configurator.get_devices():
-            print("ERROR: device \"" + device_name + "\" not supported")
+            logging.error("ERROR: device \"" + device_name + "\" not supported")
+            return
+        
+        if len(features_list) == 0:
+            logging.error("ERROR: features_list empty")
             return
 
-        prj_directory = os.path.dirname(os.path.abspath(arff_filename))
-        config_for_ARFF_gen_filename = os.path.join(prj_directory, "ARFF_generation.txt")
+        config_for_ARFF_gen_filename = os.path.join(current_directory, "ARFF_generation.txt")
 
         with open(config_for_ARFF_gen_filename, "w") as f:
             for i in range(len(datalogs)):
                 if os.path.isfile(datalogs[i]):
                     f.write("%d,0,%s,%s\n" % (i, results[i], datalogs[i]))
                 else:
-                    print("\nERROR: The following file does not exist: " + datalogs[i])
+                    logging.error("\nERROR: The following file does not exist: " + datalogs[i])
 
             f.write("configurationStarted\n")
             f.write(device_name + "\n")
@@ -184,7 +193,7 @@ class mlc_configurator:
             # Filters
             for i in range(len(filters_list)):
                 if filters_list[i].name not in mlc_configurator.get_filter_names(input_type):
-                    print("ERROR: filter \"" + filters_list[i].name + "\" not supported")
+                    logging.error("ERROR: filter \"" + filters_list[i].name + "\" not supported")
                     return
                 f.write("<"+ filters_list[i].filter_id +">" + filters_list[i].name + "\n")
                 if "BP" in filters_list[i].name:
@@ -209,11 +218,11 @@ class mlc_configurator:
             # Features
             for i in range(len(features_list)):
                 if features_list[i].name not in mlc_configurator.get_feature_names():
-                    print("ERROR: feature \"" + features_list[i].name + "\" not supported")
+                    logging.error("ERROR: feature \"" + features_list[i].name + "\" not supported")
                     return
                 if features_list[i].input not in mlc_configurator.get_mlc_inputs(device_name, input_type):
                     if "_filter_" not in features_list[i].input:
-                        print("ERROR: feature input \"" + features_list[i].input + "\" not supported")
+                        logging.error("ERROR: feature input \"" + features_list[i].input + "\" not supported")
                         return
                 f.write("<feature>" + features_list[i].name + "_" + features_list[i].input + "\n")
                 if "ZERO_CROSSING" in features_list[i].name or "PEAK_DETECTOR" in features_list[i].name:
@@ -223,19 +232,21 @@ class mlc_configurator:
             f.write("EXIT_APP")
             f.close()
 
-            print("\nCalling MLC app for features computation and ARFF generation...")
-            args = [mlc_app, "-" + device_name, "-MLC_script", config_for_ARFF_gen_filename]
+            logging.info("\nCalling MLC app for features computation and ARFF generation...")
+            args = [external_tools.mlc_app, "-" + device_name, "-MLC_script", config_for_ARFF_gen_filename]
             mlc_app_ret_value = subprocess.call(args)
             if (mlc_app_ret_value == 0):
-                print("\nARFF generated successfully: " + arff_filename)
+                logging.info("\nARFF generated successfully: " + arff_filename)
             elif (mlc_app_ret_value == 37):
-                print("\nERROR: too many features")
+                logging.error("\nERROR: too many features")
+            elif (mlc_app_ret_value == 40):
+                logging.error("\nERROR: 0 features configured")
             elif (mlc_app_ret_value == 36):
-                print("\nERROR: too many filters")
+                logging.error("\nERROR: too many filters")
             elif (mlc_app_ret_value == 35):
-                print("\nERROR: data pattern cannot be loaded")
+                logging.error("\nERROR: data pattern cannot be loaded")
             else:
-                print("\nERROR: ", mlc_app_ret_value)
+                logging.error("\nERROR: ", mlc_app_ret_value)
 
     def ucf_generator(  device_name, 
 	                   arff_filename, 
@@ -243,18 +254,18 @@ class mlc_configurator:
                        result_names, 
                        result_values, 
                        metaclassifier_values, 
-                       ucf_filename ):
+                       ucf_filename,
+                       current_directory ):
 
-        prj_directory = os.path.dirname(os.path.abspath(arff_filename))
-        config_for_ARFF_gen_filename = os.path.join(prj_directory, "ARFF_generation.txt")
-        config_for_UCF_gen_filename = os.path.join(prj_directory, "UCF_generation.txt")
+        config_for_ARFF_gen_filename = os.path.join(current_directory, "ARFF_generation.txt")
+        config_for_UCF_gen_filename = os.path.join(current_directory, "UCF_generation.txt")
 
         for i in range(0,8): 
             if not result_names[i]:
                 break
         n_decision_trees = i
         if n_decision_trees != len(dectree_filenames): 
-           print("\nERROR: wrong number of decision trees detected. Please check result_names and dectree_filenames")
+           logging.error("\nERROR: wrong number of decision trees detected. Please check result_names and dectree_filenames")
 
         results_DT1 = result_names[0]
         results_DT2 = result_names[1]
@@ -313,7 +324,7 @@ class mlc_configurator:
                       if line_of_arff.startswith( '@attribute class' ):
                         classes_string = line_of_arff[line_of_arff.find('{') + 1 : line_of_arff.find('}')]
                         classes_list = classes_string.split(', ')
-                        print("Classes from ARFF: ", classes_list)
+                        logging.info("Classes from ARFF: " + ', '.join(classes_list))
 
                 elif (configurationStopped == False):
                   if line.strip() != "":
@@ -338,7 +349,7 @@ class mlc_configurator:
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "IIS2ICLX":
             max_DT_classes = 256
         else:
-            print("ERROR: device \"" + device_name + "\" not supported")
+            logging.error("ERROR: device \"" + device_name + "\" not supported")
         for i in range(0, max_DT_classes):
           if i > 0:
             result_values_DT1_string += " ; "
@@ -407,14 +418,14 @@ class mlc_configurator:
         f.write("EXIT_APP")
         f.close()
 
-        print("\nCalling MLC app for .ucf file generation...")
-        args = [mlc_app, "-" + device_name, "-MLC_script", config_for_UCF_gen_filename]
+        logging.info("\nCalling MLC app for .ucf file generation...")
+        args = [external_tools.mlc_app, "-" + device_name, "-MLC_script", config_for_UCF_gen_filename]
         mlc_app_ret_value = subprocess.call(args)
         if (mlc_app_ret_value == 0):
-            print("\n.ucf file generated successfully: " + ucf_filename)
+            logging.info("\n.ucf file generated successfully: " + ucf_filename)
         elif (mlc_app_ret_value == 38):
-            print("\nERROR: Maximum number of nodes exceeded")
+            logging.error("\nERROR: Maximum number of nodes exceeded")
         elif (mlc_app_ret_value == 39):
-            print("\nERROR: Cannot open decision tree file")
+            logging.error("\nERROR: Cannot open decision tree file")
         else:
-            print("\nERROR: ", mlc_app_ret_value)
+            logging.error("\nERROR: ", mlc_app_ret_value)

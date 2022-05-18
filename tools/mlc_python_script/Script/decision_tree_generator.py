@@ -7,6 +7,8 @@ from scipy.io import arff
 import re
 import sys
 import numpy as np
+import os
+import logging
 
 def isLeaf(src_str):
     r = re.match("[0-9]+ \[label=\"", src_str)
@@ -114,10 +116,12 @@ def printTree(dot_tree, dt_file):
         new_tree.append(line)
 
     # Print in Weka format
-    n_nodes, n_leaves = formatTree(new_tree[2:-1], 0, dt_file)
+    size_tree, n_leaves = formatTree(new_tree[2:-1], 0, dt_file)
 
     print('\nNumber of Leaves  : \t', n_leaves, file=dt_file)
-    print('\nSize of the Tree : \t', n_nodes, file=dt_file)
+    print('\nSize of the Tree : \t', size_tree, file=dt_file)
+
+    n_nodes = n_leaves - 1;
 
     return n_nodes, n_leaves
 
@@ -149,16 +153,24 @@ def generateDecisionTree( arff_filename, dectree_filename):
 
     # Model Accuracy, how often is the classifier correct?
     dectree_accuracy = metrics.accuracy_score(y_test, y_pred)
-    print("Accuracy:", dectree_accuracy)
 
     dot_tree = tree.export_graphviz(clf, out_file=None, class_names=clf.classes_, label="none", impurity=False,
                                     feature_names=feature_cols)
 
+    # Save to file
     dt_file = open(dectree_filename, "w")
     n_nodes, n_leaves = printTree(dot_tree, dt_file)
     dt_file.close()
 
-    printTree(dot_tree, sys.stdout)
+    # Read file for logging
+    text_file = open(dectree_filename, "r")
+    file_content = text_file.read()
+    text_file.close()
+    if n_nodes > 0:
+        logging.info("Accuracy:" + str(dectree_accuracy))
+        logging.info(file_content)
+    else: 
+        logging.error("ERROR: decision tree empty. Please check selected features")
 
     return dectree_accuracy, n_nodes
 
