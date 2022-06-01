@@ -153,7 +153,7 @@ def generateDecisionTree(arff_filename, dectree_filename):
     print("Accuracy:", dectree_accuracy)
 
     dot_tree = tree.export_graphviz(clf, out_file=None, class_names=clf.classes_, label="none", impurity=False,
-                                    feature_names=feature_cols)
+                                    feature_names=feature_cols, precision=10) # lower precision cuts off float values
 
     dt_file = open(dectree_filename, "w")
     n_nodes, n_leaves = printTree(dot_tree, dt_file)
