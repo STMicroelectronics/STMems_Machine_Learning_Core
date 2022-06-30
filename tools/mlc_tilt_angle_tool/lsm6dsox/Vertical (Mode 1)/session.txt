@@ -1,0 +1,21 @@
+---- parameters
+  m = 1, vertical axis mode (accZ)
+  angle from 45.0000 to 90.0000 deg
+  16 leaves
+  opt = 0, shallow decision tree
+  gravity = 1.000000
+  RMS noise = 0.001800
+  vert.  axis offset = +0.000000, sensitivity = +1.000000, string = accZ
+
+---- conversion formula
+  angle resolution = 3.0000 deg
+  conversion formula for output codes (0-15):
+    angle = output code * 3.000000 + (45.000000) deg
+
+---- output codes/labels
+0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15
+
+---- other information
+Max recursion level: 3
+Leaves/angles prone to RMS noise: 0
+................

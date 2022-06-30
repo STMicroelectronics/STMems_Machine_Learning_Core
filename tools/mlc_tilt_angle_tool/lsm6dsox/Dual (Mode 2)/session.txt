@@ -1,0 +1,22 @@
+---- parameters
+  m = 2, dual axis mode (accX and accZ)
+  angle from -40.0000 to 100.0000 deg
+  16 leaves
+  opt = 1, RMS-safe decision tree
+  gravity = 1.000000
+  RMS noise = 0.001800
+  horiz. axis offset = +0.000000, sensitivity = +1.000000, string = accX
+  vert.  axis offset = +0.000000, sensitivity = +1.000000, string = accZ
+
+---- conversion formula
+  angle resolution = 9.3333 deg
+  conversion formula for output codes (0-15):
+    angle = output code * 9.333333 + (-40.000000) deg
+
+---- output codes/labels
+0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15
+
+---- other information
+Max recursion level: 4
+Leaves/angles prone to RMS noise: 0
+................
