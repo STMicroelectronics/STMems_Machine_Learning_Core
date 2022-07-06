@@ -1,0 +1,46 @@
+F5_VAR_on_ACC_Y <= 0.00518967
+|   F10_PeakToPeak_on_ACC_X <= 0.0119019: stationary (21.0)
+|   F10_PeakToPeak_on_ACC_X > 0.0119019
+|   |   F2_MEAN_on_ACC_Y <= -0.17041: jackup (32.0)
+|   |   F2_MEAN_on_ACC_Y > -0.17041
+|   |   |   F1_MEAN_on_ACC_X <= -0.04599: stationary (12.0)
+|   |   |   F1_MEAN_on_ACC_X > -0.04599: jackup (21.0)
+F5_VAR_on_ACC_Y > 0.00518967
+|   F10_PeakToPeak_on_ACC_X <= 0.9375: motion (53.0)
+|   F10_PeakToPeak_on_ACC_X > 0.9375: crash (7.0)
+
+Number of Leaves  : 	6
+Size of the tree : 	11
+
+
+class:
+ => stationary, motion, jackup, crash, 
+features:
+ => F1_MEAN_on_ACC_X, F2_MEAN_on_ACC_Y, F3_MEAN_on_ACC_V, F4_VAR_on_ACC_X, F5_VAR_on_ACC_Y, F6_VAR_on_ACC_V, F7_ENERGY_on_ACC_X, F8_ENERGY_on_ACC_Y, F9_ENERGY_on_ACC_V, F10_PeakToPeak_on_ACC_X, F11_PeakToPeak_on_ACC_Y, F12_PeakToPeak_on_ACC_V, 
+
+
+Mean absolute error	0.941176
+Root mean squared error	0.944846
+ ======= Whole data training with Confidence Factor: 0.9 ========= 
+
+
+===== Confusion Matrix =====
+         	stationa	motion   	jackup   	crash    	<-- classified as
+stationa	33	0	0	0	
+motion   	0	53	0	0	
+jackup   	0	0	53	0	
+crash    	0	0	0	7	
+
+Total Number of Instances        : 146
+Correctly Classified Instances   : 146
+Incorrectly Classified Instances : 0
+Kappa Statistic: 0.316945
+Accuracy: 100%
+
+Report  :	precision	recall	support	
+stationa	1    	1	 33
+motion   	1    	1	 53
+jackup   	1    	1	 53
+crash    	1    	1	 7
+
+avg/total	1    	1	 146
