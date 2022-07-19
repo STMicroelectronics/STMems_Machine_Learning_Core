@@ -116,7 +116,7 @@ def printTree(dot_tree, dt_file):
         new_tree.append(line)
 
     # Print in Weka format
-    size_tree, n_leaves = formatTree(new_tree[2:-1], 0, dt_file)
+    size_tree, n_leaves = formatTree(new_tree[3:-1], 0, dt_file)
 
     print('\nNumber of Leaves  : \t', n_leaves, file=dt_file)
     print('\nSize of the Tree : \t', size_tree, file=dt_file)
