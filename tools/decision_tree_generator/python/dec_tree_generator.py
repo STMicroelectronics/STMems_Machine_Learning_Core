@@ -108,14 +108,16 @@ def printTree(dot_tree, dt_file):
     for line in dot_tree.split("\n"):
         r = re.search("[0-9]+\\\\n\[([0-9]+[,]?[ ]?)+\]\\\\n", line)
         s = re.search("\[labeldistance=[0-9]+\.?[0-9]*, labelangle=-?[0-9]+, headlabel=\"(False|True)\"\]", line)
+        t = re.search("(\d+\s*\[.*)|(\d\s*->\s*\d)|(.*}.*)", line)
         if (r != None):
             line = line[:r.start()] + line[r.end():]
         if (s != None):
             line = line[:s.start()] + line[s.end():]
-        new_tree.append(line)
+        if (t != None):
+            new_tree.append(line)
 
     # Print in Weka format
-    n_nodes, n_leaves = formatTree(new_tree[3:-1], 0, dt_file)
+    n_nodes, n_leaves = formatTree(new_tree[:-1], 0, dt_file)
 
     print('\nNumber of Leaves  : \t', n_leaves, file=dt_file)
     print('\nSize of the Tree : \t', n_nodes, file=dt_file)
