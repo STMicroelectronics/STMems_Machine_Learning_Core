@@ -459,7 +459,7 @@ configuration header file generated from ucf file
 #define MLC_CONFIGURATION_H
 
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -476,7 +476,7 @@ typedef struct {
 #endif /* MEMS_UCF_SHARED_TYPES */
 
 /** Configuration array generated from Unico Tool **/
-const ucf_line_t MLC_configuration[] = {%s
+const ucf_line_t mlc_configuration[] = {%s
 };
 
 #ifdef __cplusplus
