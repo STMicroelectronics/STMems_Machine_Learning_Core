@@ -2,6 +2,7 @@ import os
 import subprocess
 from mlc_script_log import *
 import external_tools
+import re
 
 class mlc_configurator:
 	
@@ -429,3 +430,63 @@ class mlc_configurator:
             logging.error("\nERROR: Cannot open decision tree file")
         else:
             logging.error("\nERROR: ", mlc_app_ret_value)
+
+
+    def h_generator(ucf_filename, h_filename):
+        with open(ucf_filename, "r") as f:
+            ucff = f.readlines()
+
+        conf_data = ""
+        conf_regex = "Ac\s+([0-9,A-F]+)\s+([0-9,A-F]+)"
+        for i in range(len(ucff)):
+            res = re.search(conf_regex, ucff[i])
+            if(res and len(res.groups()) == 2):
+                hline = ("\n\t{.address = 0x%s, .data = 0x%s,}" % res.groups())
+                if(i < len(ucff) - 1):
+                    hline += ","
+                conf_data += hline
+
+        hstr = (
+            '''
+/*
+******************************************************************************
+configuration header file generated from ucf file
+******************************************************************************
+*/
+
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef MLC_CONFIGURATION_H
+#define MLC_CONFIGURATION_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include <stdint.h>
+#ifndef MEMS_UCF_SHARED_TYPES
+#define MEMS_UCF_SHARED_TYPES
+
+/** Common data block definition **/
+typedef struct {
+    uint8_t address;
+    uint8_t data;
+} ucf_line_t;
+
+#endif /* MEMS_UCF_SHARED_TYPES */
+
+/** Configuration array generated from Unico Tool **/
+const ucf_line_t MLC_configuration[] = {%s
+};
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* MLC_CONFIGURATION_H */
+            ''' % conf_data
+        )
+
+        with open(h_filename, "w") as hout:
+            hout.write(hstr)
+        logging.info("Header file successfully generated. %s  ->  %s" % (ucf_filename, h_filename))
