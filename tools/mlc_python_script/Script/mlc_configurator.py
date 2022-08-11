@@ -31,7 +31,7 @@ class mlc_configurator:
             self.coef_gain = coef_gain
 
     def get_devices(): 
-        device_list = ["LSM6DSOX", "LSM6DSRX", "ISM330DHCX", "LSM6DSO32X", "IIS2ICLX"] 
+        device_list = ["LSM6DSOX", "LSM6DSRX", "ISM330DHCX", "LSM6DSO32X", "IIS2ICLX", "ASM330LHHX"] 
         return device_list
 
     def get_mlc_odr( device_name ): 
@@ -64,7 +64,7 @@ class mlc_configurator:
             accelerometer_fs = ["4 g", "8 g", "16 g", "32 g"]
         elif device_name == "IIS2ICLX":
             accelerometer_fs = ["0.5 g", "1 g", "2 g", "3 g"]
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX":
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX":
             accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
@@ -77,7 +77,7 @@ class mlc_configurator:
             accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
         elif device_name == "IIS2ICLX":
             accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz"]
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
             accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
@@ -88,7 +88,7 @@ class mlc_configurator:
             gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps"]
         elif device_name == "LSM6DSO32X":
             gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps"]
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
             gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps", "4000 dps"]
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
@@ -99,7 +99,7 @@ class mlc_configurator:
             gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
         elif device_name == "LSM6DSO32X":
             gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX": 
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
             gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
@@ -238,16 +238,8 @@ class mlc_configurator:
             mlc_app_ret_value = subprocess.call(args)
             if (mlc_app_ret_value == 0):
                 logging.info("\nARFF generated successfully: " + arff_filename)
-            elif (mlc_app_ret_value == 37):
-                logging.error("\nERROR: too many features")
-            elif (mlc_app_ret_value == 40):
-                logging.error("\nERROR: 0 features configured")
-            elif (mlc_app_ret_value == 36):
-                logging.error("\nERROR: too many filters")
-            elif (mlc_app_ret_value == 35):
-                logging.error("\nERROR: data pattern cannot be loaded")
             else:
-                logging.error("\nERROR: ", mlc_app_ret_value)
+                external_tools.decodeErrorCode(mlc_app_ret_value)
 
     def ucf_generator(  device_name, 
 	                   arff_filename, 
@@ -347,7 +339,7 @@ class mlc_configurator:
         max_DT_classes = 256
         if device_name == "LSM6DSOX" or device_name == "LSM6DSO32X":
             max_DT_classes = 16
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "IIS2ICLX":
+        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "IIS2ICLX" or device_name == "ASM330LHHX":
             max_DT_classes = 256
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
@@ -424,14 +416,8 @@ class mlc_configurator:
         mlc_app_ret_value = subprocess.call(args)
         if (mlc_app_ret_value == 0):
             logging.info("\n.ucf file generated successfully: " + ucf_filename)
-        elif (mlc_app_ret_value == 38):
-            logging.error("\nERROR: Maximum number of nodes exceeded")
-        elif (mlc_app_ret_value == 39):
-            logging.error("\nERROR: Cannot open decision tree file")
         else:
-            logging.error("\nERROR: ", mlc_app_ret_value)
-
-
+            external_tools.decodeErrorCode(mlc_app_ret_value)
     def h_generator(ucf_filename, h_filename):
         with open(ucf_filename, "r") as f:
             ucff = f.readlines()
