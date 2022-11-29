@@ -1,10 +1,11 @@
--- Machine Learning Core Tool v9.8.12.9 Beta, LSM6DSOX
--- <MLC0_SRC>DT1,1='other',4='walk',8='run'
+-- Machine Learning Core Tool v9.13.0.0, LSM6DSOX
+-- <MLC0_SRC>DT1,1='other_wrist',4='walk_wrist',8='run_wrist'
 
 
 Ac 10 00
 Ac 11 00
 Ac 01 80
+Ac 04 00
 Ac 05 00
 Ac 17 40
 Ac 02 11
@@ -163,7 +164,6 @@ Ac 09 00
 Ac 09 00
 Ac 09 00
 Ac 01 00
-Ac 12 00
 Ac 01 80
 Ac 17 40
 Ac 02 31
@@ -456,13 +456,10 @@ Ac 04 00
 Ac 05 10
 Ac 02 01
 Ac 01 00
-Ac 12 44
+Ac 5E 02
 Ac 01 80
+Ac 0D 01
 Ac 60 15
 Ac 01 00
 Ac 10 2C
 Ac 11 00
-Ac 5E 02
-Ac 01 80
-Ac 0D 01
-Ac 01 00
