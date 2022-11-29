@@ -1,4 +1,4 @@
-accX[mg]	accY[mg]	accZ[mg] 
+A_X [mg]	A_Y [mg]	A_Z [mg]
 9	913	-379
 -575	481	-172
 -956	461	-61

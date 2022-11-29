@@ -1,13 +1,13 @@
 /*
  ******************************************************************************
- * @file    LSM6DSO32X_MLC_AW_wrist.h
- * @author  Sensors Software Solution Team
- * @brief   This file contains the configuration for LSM6DSO32X_MLC_AW_wrist.
+ * @file    lsm6dso32x_activity_recognition_for_wrist.h
+ * @author  MEMS Software Solutions Team
+ * @brief   This file contains the configuration for lsm6dso32x_activity_recognition_for_wrist.
  *
  ******************************************************************************
  * @attention
  *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
  * All rights reserved.</center></h2>
  *
  * This software component is licensed by ST under BSD 3-Clause license,
@@ -18,8 +18,8 @@
  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef LSM6DSO32X_MLC_AW_WRIST_H
-#define LSM6DSO32X_MLC_AW_WRIST_H
+#ifndef LSM6DSO32X_ACTIVITY_RECOGNITION_FOR_WRIST_H
+#define LSM6DSO32X_ACTIVITY_RECOGNITION_FOR_WRIST_H
 
 #ifdef __cplusplus
   extern "C" {
@@ -39,10 +39,11 @@ typedef struct {
 #endif /* MEMS_UCF_SHARED_TYPES */
 
 /** Configuration array generated from Unico Tool **/
-const ucf_line_t LSM6DSO32X_MLC_AW_wrist[] = {
+const ucf_line_t lsm6dso32x_activity_recognition_for_wrist[] = {
   {.address = 0x10, .data = 0x00,},
   {.address = 0x11, .data = 0x00,},
   {.address = 0x01, .data = 0x80,},
+  {.address = 0x04, .data = 0x00,},
   {.address = 0x05, .data = 0x00,},
   {.address = 0x17, .data = 0x40,},
   {.address = 0x02, .data = 0x11,},
@@ -201,7 +202,6 @@ const ucf_line_t LSM6DSO32X_MLC_AW_wrist[] = {
   {.address = 0x09, .data = 0x00,},
   {.address = 0x09, .data = 0x00,},
   {.address = 0x01, .data = 0x00,},
-  {.address = 0x12, .data = 0x00,},
   {.address = 0x01, .data = 0x80,},
   {.address = 0x17, .data = 0x40,},
   {.address = 0x02, .data = 0x31,},
@@ -494,21 +494,18 @@ const ucf_line_t LSM6DSO32X_MLC_AW_wrist[] = {
   {.address = 0x05, .data = 0x10,},
   {.address = 0x02, .data = 0x01,},
   {.address = 0x01, .data = 0x00,},
-  {.address = 0x12, .data = 0x44,},
-  {.address = 0x01, .data = 0x80,},
-  {.address = 0x60, .data = 0x15,},
-  {.address = 0x01, .data = 0x00,},
-  {.address = 0x10, .data = 0x28,},
-  {.address = 0x11, .data = 0x00,},
   {.address = 0x5E, .data = 0x02,},
   {.address = 0x01, .data = 0x80,},
   {.address = 0x0D, .data = 0x01,},
-  {.address = 0x01, .data = 0x00,}
+  {.address = 0x60, .data = 0x15,},
+  {.address = 0x01, .data = 0x00,},
+  {.address = 0x10, .data = 0x28,},
+  {.address = 0x11, .data = 0x00,}
 };
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* LSM6DSO32X_MLC_AW_WRIST_H */
+#endif /* LSM6DSO32X_ACTIVITY_RECOGNITION_FOR_WRIST_H */
 
