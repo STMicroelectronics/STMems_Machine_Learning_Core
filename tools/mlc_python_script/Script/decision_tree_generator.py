@@ -107,7 +107,7 @@ def printTree(dot_tree, dt_file):
 
     # Preprocess the tree
     for line in dot_tree.split("\n"):
-        r = re.search("[0-9]+\\\\n\[([0-9]+[,]?[ ]?)+\]\\\\n", line)
+        r = re.search("[0-9]+\\\\n\[(([0-9]+[,]?[ ]?)|([0-9]+\\\\n))+\]\\\\n", line)
         s = re.search("\[labeldistance=[0-9]+\.?[0-9]*, labelangle=-?[0-9]+, headlabel=\"(False|True)\"\]", line)
         t = re.search("(\d+\s*\[.*)|(\d\s*->\s*\d)|(.*}.*)", line)
         if (r != None):

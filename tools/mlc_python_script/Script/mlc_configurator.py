@@ -7,10 +7,14 @@ import re
 class mlc_configurator:
 	
     class mlc_feature(object):
-        def __init__(self, name=None, input=None, threshold=0):
+        def __init__(self, name=None, input=None, threshold=0, paramList=None):
             self.name = name
             self.input = input
             self.threshold = threshold
+            if paramList is None:
+                self.paramList = []
+            else:
+                self.paramList = paramList 
             
     class mlc_filter: 
         def __init__(self, filter_id="filter_1", 
@@ -31,16 +35,25 @@ class mlc_configurator:
             self.coef_gain = coef_gain
 
     def get_devices(): 
-        device_list = ["LSM6DSOX", "LSM6DSRX", "ISM330DHCX", "LSM6DSO32X", "IIS2ICLX", "ASM330LHHX"] 
+        device_list = ["LSM6DSOX", "LSM6DSRX", "ISM330DHCX", "LSM6DSO32X", "IIS2ICLX", "ASM330LHHX", "LSM6DSV16X", "LSM6DSV16BX", "LIS2DUX12", "LIS2DUXS12"] 
         return device_list
 
     def get_mlc_odr( device_name ): 
-        mlc_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz"]
+        if device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX":
+            mlc_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz"]
+        elif device_name == "LIS2DUX12" or device_name == "LIS2DUXS12":
+            mlc_odr = ["12.5 Hz", "25 Hz", "50 Hz", "100 Hz", "200 Hz"]
+        else: 
+            mlc_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz"]
         return mlc_odr
 
     def get_mlc_input_type( device_name ): 
         if device_name == "IIS2ICLX":
             mlc_input_type = ["accelerometer_only"]
+        elif device_name == "LIS2DUX12":
+            mlc_input_type = ["accelerometer_only", "accelerometer+temperature"]
+        elif device_name == "LIS2DUXS12":
+            mlc_input_type = ["accelerometer_only", "accelerometer+temperature/qvar"]
         else: 
             mlc_input_type = ["accelerometer_only", "accelerometer+gyroscope"]
         return mlc_input_type
@@ -55,6 +68,12 @@ class mlc_configurator:
         elif input_type == "accelerometer+gyroscope":
             mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2", 
                           "Gyr_X", "Gyr_Y", "Gyr_Z", "Gyr_V", "Gyr_V2"]
+        elif input_type == "accelerometer+temperature":
+            mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2", 
+                          "T_X", "T_V", "T_V2"]
+        elif input_type == "accelerometer+temperature/qvar":
+            mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2", 
+                          "TQ_X", "TQ_V", "TQ_V2"]
         return mlc_inputs
 
     def get_accelerometer_fs( device_name ):
@@ -65,6 +84,10 @@ class mlc_configurator:
         elif device_name == "IIS2ICLX":
             accelerometer_fs = ["0.5 g", "1 g", "2 g", "3 g"]
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX":
+            accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
+        elif device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX":
+            accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
+        elif device_name == "LIS2DUX12" or device_name == "LIS2DUXS12":
             accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
@@ -79,6 +102,10 @@ class mlc_configurator:
             accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz"]
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
             accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
+        elif device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX": 
+            accelerometer_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz", "480 Hz", "960 Hz", "1920 Hz", "3840 Hz", "7680 Hz"]
+        elif device_name == "LIS2DUX12" or device_name == "LIS2DUXS12": 
+            accelerometer_odr = ["12.5 Hz", "25 Hz", "50 Hz", "100 Hz", "200 Hz", "400 Hz", "800 Hz"]
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
         return accelerometer_odr
@@ -89,6 +116,8 @@ class mlc_configurator:
         elif device_name == "LSM6DSO32X":
             gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps"]
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
+            gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps", "4000 dps"]
+        elif device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX": 
             gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps", "4000 dps"]
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
@@ -101,6 +130,8 @@ class mlc_configurator:
             gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
             gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
+        elif device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX": 
+            gyroscope_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz", "480 Hz", "960 Hz", "1920 Hz", "3840 Hz", "7680 Hz"]
         else:
             logging.error("ERROR: device \"" + device_name + "\" not supported")
         return gyroscope_odr
@@ -117,6 +148,11 @@ class mlc_configurator:
                             "BP_Acc_XYZ", "BP_Acc_V", "BP_Acc_V2", "BP_Gyr_XYZ", "BP_Gyr_V", "BP_Gyr_V2",
                             "IIR1_Acc_XYZ", "IIR1_Acc_V", "IIR1_Acc_V2", "IIR1_Gyr_XYZ", "IIR1_Gyr_V", "IIR1_Gyr_V2", 
                             "IIR2_Acc_XYZ", "IIR2_Acc_V", "IIR2_Acc_V2", "IIR2_Gyr_XYZ", "IIR2_Gyr_V", "IIR2_Gyr_V2"]
+        elif input_type == "accelerometer+temperature" or input_type == "accelerometer+temperature/qvar":
+            filter_names = ["HP_Acc_XYZ", "HP_Acc_V", "HP_Acc_V2", "HP_T/Q_XYZ", "HP_T/Q_V",  "HP_T/Q_V2",
+                            "BP_Acc_XYZ", "BP_Acc_V", "BP_Acc_V2", "BP_T/Q_XYZ", "BP_T/Q_V", "BP_T/Q_V2",
+                            "IIR1_Acc_XYZ", "IIR1_Acc_V", "IIR1_Acc_V2", "IIR1_T/Q_XYZ", "IIR1_T/Q_V", "IIR1_T/Q_V2", 
+                            "IIR2_Acc_XYZ", "IIR2_Acc_V", "IIR2_Acc_V2", "IIR2_T/Q_XYZ", "IIR2_T/Q_V", "IIR2_T/Q_V2"]
         return filter_names
 
     def get_feature_names():
@@ -136,7 +172,9 @@ class mlc_configurator:
                          "MINIMUM", 
                          "ABS_MINIMUM",
                          "MAXIMUM",
-                         "ABS_MAXIMUM"]
+                         "ABS_MAXIMUM",
+                         "RECURSIVE_MEAN_RMS_VARIANCE",
+                         "RECURSIVE_MAX_MIN_PEAKTOPEAK"]
         return feature_names
 
     def arff_generator( device_name, 
@@ -228,6 +266,8 @@ class mlc_configurator:
                 f.write("<feature>" + features_list[i].name + "_" + features_list[i].input + "\n")
                 if "ZERO_CROSSING" in features_list[i].name or "PEAK_DETECTOR" in features_list[i].name:
                     f.write("<threshold>" + str(features_list[i].threshold) + "\n") 
+                if "RECURSIVE_MEAN_RMS_VARIANCE" in features_list[i].name or "RECURSIVE_MAX_MIN_PEAKTOPEAK" in features_list[i].name:
+                    f.write("<paramList>" + str(features_list[i].paramList) + "\n")  
             f.write("<feature>" + "END_FEATURES" + "\n") 
             f.write(arff_filename + "\n")
             f.write("EXIT_APP")
@@ -337,7 +377,7 @@ class mlc_configurator:
         result_values_DT7_string = ""
         result_values_DT8_string = ""
         max_DT_classes = 256
-        if device_name == "LSM6DSOX" or device_name == "LSM6DSO32X":
+        if device_name == "LSM6DSOX" or device_name == "LSM6DSO32X" or device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX" or device_name == "LIS2DUX12" or device_name == "LIS2DUXS12": 
             max_DT_classes = 16
         elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "IIS2ICLX" or device_name == "ASM330LHHX":
             max_DT_classes = 256
