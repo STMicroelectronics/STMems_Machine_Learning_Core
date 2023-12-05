@@ -21,7 +21,10 @@ Each example sub-folder contains:
 
 # 2. How to run the application examples
 
+
 ## Run the example with *Professional MEMS tool* board and *Unico GUI* 
+<details open>
+<summary>Click to see/hide details </summary>
 
 [Unico GUI](https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/unico-gui.html) is a software tool working with [STEVAL-MKI109V3]( https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mki109v3.html ), professional evaluation board for MEMS sensors, referenced as **ProfiMEMS** in ST docs.
 
@@ -41,9 +44,14 @@ To run the MLC application example in *Unico GUI*, the `.ucf` file has to be loa
 
 6. Once the device has been configured, press *Start*  and you can visualize MLC results in the *Data* tool of *Unico GUI*
 
+</details>
+
    
 
 ## Run the example with *STM32 Nucleo* board and *Unicleo GUI* 
+
+<details>
+<summary>Click to see/hide details </summary>
 
 [Unicleo GUI](https://www.st.com/content/st_com/en/products/embedded-software/evaluation-tool-software/unicleo-gui.html) software tool works with [STM32 Nucleo](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-nucleo-boards.html) motherboards coupled with X-NUCLEO expansion boards (e.g. [X-NUCLEO-IKS01A3](https://www.st.com/content/st_com/en/products/ecosystems/stm32-open-development-environment/stm32-nucleo-expansion-boards/stm32-ode-sense-hw/x-nucleo-iks01a3.html)). Optional sensor in form of DIL24 adapter can be plugged on top of the X-NUCLEO expansion board.
 
@@ -63,9 +71,14 @@ To run the MLC application example in *Unicleo GUI*, the `.ucf` file has to be l
 7. Run *Unicleo GUI*, connect to the device, select the desired sensors, click the checkbox to enable the MLC, then click on the MLC button on the left panel, browse and load the *Unico GUI* Configuration File (`.ucf`) through the *Browse* button, finally click the Start button in the main window 
 8. MLC results are displayed in the *MLC* window and User Messages Tab
 
+</details>
 
+   
 
 ## Run the example with *SensorTile.box* and *Unicleo GUI* 
+
+<details>
+<summary>Click to see/hide details </summary>
 
 The `.ucf` file can also be loaded in the [SensorTile.box](https://www.st.com/en/evaluation-tools/steval-mksbox1v1.html) board through the **DataLogExtended** firmware available in [FP-SNS-STBOX1](https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32-ode-function-pack-sw/fp-sns-stbox1.html) package. The SensorTile.box can be programmed by [STM32CubeProgrammer](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-programmers/stm32cubeprog.html#overview)  software. Here all the steps:
 
@@ -83,9 +96,14 @@ The `.ucf` file can also be loaded in the [SensorTile.box](https://www.st.com/en
 
 5. MLC results are displayed in MLC window and User Messages Tab
 
+</details>
+
    
 
 ## Run the example with *SensorTile.box* and *AlgoBuilder*
+
+<details>
+<summary>Click to see/hide details </summary>
 
 [AlgoBuilder](https://www.st.com/content/st_com/en/products/embedded-software/mems-and-sensors-software/inemo-engine-software-libraries/algobuilder.html) is a software tool able to design a custom processing flow and to build the firmware for [STM32 Nucleo](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-nucleo-boards.html) boards coupled with the MEMS expansions, or for form-factor evaluation boards such as [SensorTile.box](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mems-motion-sensor-eval-boards/steval-mksbox1v1.html).
 
@@ -101,9 +119,14 @@ You will create a firmware project using *AlgoBuilder*, which can be configured 
 8. Program the target: put the *SensorTile.box* in **DFU mode**, "Tools" -> "Program Target". 
 9. Open *Unicleo GUI*: "Tools" -> "Run Unicleo-GUI application", connect to the device, press Start to display the output in real-time.
 
+</details>
+
 
 
 ## Run the example with *STWIN* and *HSDatalog*
+
+<details>
+<summary>Click to see/hide details </summary>
 
 [HSDatalog](  https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32-ode-function-pack-sw/fp-sns-datalog1.html  ) is a high speed data logging command line application for the [STWIN](https://www.st.com/en/evaluation-tools/steval-stwinkt1.html) board.
 
@@ -128,8 +151,13 @@ Here all the required steps to run a MLC example through *STWIN* and *HSDatalog*
    Further details on the high-speed data log function pack are available in the user manual [UM2688](  https://www.st.com/resource/en/user_manual/dm00685314-getting-started-with-the-stm32cube-high-speed-datalog-function-pack-for-stwin-evaluation-kits-stmicroelectronics.pdf  ).
 
 
+</details>
+
 
 ## Run the example on a custom hardware using *C-programming*
+
+<details open>
+<summary>Click to see/hide details </summary>
 
 A `.h` file is provided to easily include the MLC configuration in any C-programmable custom hardware.  
 
@@ -146,6 +174,8 @@ To run the example through the configuration provided in the `.h` file, it neces
 
 Some examples of sensors integration are available at the [platform independent drivers repository]( http://www.st.com/content/st_com/en/products/embedded-software/mems-and-sensors-software/drivers-for-mems/c-driver-mems.html ) for *STMicroelectronics* sensors.
 
+
+</details>
 
 
 ------
