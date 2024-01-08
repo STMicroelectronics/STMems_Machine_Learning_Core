@@ -1,8 +1,8 @@
-import os
 import subprocess
-from mlc_script_log import *
-import external_tools
+import logging
+import os
 import re
+
 
 class mlc_configurator:
 	
@@ -274,12 +274,12 @@ class mlc_configurator:
             f.close()
 
             logging.info("\nCalling MLC app for features computation and ARFF generation...")
-            args = [external_tools.mlc_app, "-" + device_name, "-MLC_script", config_for_ARFF_gen_filename]
-            mlc_app_ret_value = subprocess.call(args)
-            if (mlc_app_ret_value == 0):
+            args = ["mlc_configuration_tool.exe", f"-{device_name}", "-MLC_script", config_for_ARFF_gen_filename]
+            proc = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if (proc.returncode == 0):
                 logging.info("\nARFF generated successfully: " + arff_filename)
             else:
-                external_tools.decodeErrorCode(mlc_app_ret_value)
+                logging.error(f"\n{proc.stderr.decode()}")
 
     def ucf_generator(  device_name, 
 	                   arff_filename, 
@@ -452,12 +452,12 @@ class mlc_configurator:
         f.close()
 
         logging.info("\nCalling MLC app for .ucf file generation...")
-        args = [external_tools.mlc_app, "-" + device_name, "-MLC_script", config_for_UCF_gen_filename]
-        mlc_app_ret_value = subprocess.call(args)
-        if (mlc_app_ret_value == 0):
+        args = ["mlc_configuration_tool.exe", f"-{device_name}", "-MLC_script", config_for_UCF_gen_filename]
+        proc = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if (proc.returncode == 0):
             logging.info("\n.ucf file generated successfully: " + ucf_filename)
         else:
-            external_tools.decodeErrorCode(mlc_app_ret_value)
+            logging.error(f"\n{proc.stderr.decode()}")
     def h_generator(ucf_filename, h_filename):
         with open(ucf_filename, "r") as f:
             ucff = f.readlines()

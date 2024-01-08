@@ -1,8 +1,6 @@
 import subprocess
 import logging
 
-import external_tools
-
 
 def test_arff_on_decisiontree(
     dectree_filename: str,
@@ -13,7 +11,7 @@ def test_arff_on_decisiontree(
     logging.info("\nCalling MLC app for testing ARFF on decision tree...")
     proc = subprocess.run(
         args=[
-            external_tools.mlc_app,
+            "mlc_configuration_tool.exe",
             "dtt",
             dectree_filename,
             "--arff",
