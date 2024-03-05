@@ -1,8 +1,8 @@
 /*
  ******************************************************************************
- * @file    head_gestures_dsv16bx.h
+ * @file    lsm6dsv16bx_head_gestures.h
  * @author  MEMS Software Solutions Team
- * @brief   This file contains the configuration for head_gestures_dsv16bx.
+ * @brief   This file contains the configuration for lsm6dsv16bx_head_gestures.
  *
  ******************************************************************************
  * @attention
@@ -18,8 +18,8 @@
  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef HEAD_GESTURES_DSV16BX_H
-#define HEAD_GESTURES_DSV16BX_H
+#ifndef LSM6DSV16BX_HEAD_GESTURES_H
+#define LSM6DSV16BX_HEAD_GESTURES_H
 
 #ifdef __cplusplus
   extern "C" {
@@ -39,7 +39,7 @@ typedef struct {
 #endif /* MEMS_UCF_SHARED_TYPES */
 
 /** Configuration array generated from Unico Tool **/
-const ucf_line_t head_gestures_dsv16bx[] = {
+const ucf_line_t lsm6dsv16bx_head_gestures[] = {
   {.address = 0x10, .data = 0x00,},
   {.address = 0x11, .data = 0x00,},
   {.address = 0x01, .data = 0x80,},
@@ -183,5 +183,5 @@ const ucf_line_t head_gestures_dsv16bx[] = {
 }
 #endif
 
-#endif /* HEAD_GESTURES_DSV16BX_H */
+#endif /* LSM6DSV16BX_HEAD_GESTURES_H */
 
