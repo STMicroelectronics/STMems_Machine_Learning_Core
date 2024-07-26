@@ -1,0 +1,86 @@
+{
+    "datalogs": [
+        { "filename": "data/0_stationary/log_0.csv", "label": "stationary" },
+        { "filename": "data/0_stationary/log_1.csv", "label": "stationary" },
+        { "filename": "data/0_stationary/log_2.csv", "label": "stationary" },
+        { "filename": "data/0_stationary/log_3.csv", "label": "stationary" },
+        { "filename": "data/1_walking/log_0.csv",    "label": "walking"    },
+        { "filename": "data/1_walking/log_1.csv",    "label": "walking"    },
+        { "filename": "data/1_walking/log_2.csv",    "label": "walking"    },
+        { "filename": "data/1_walking/log_3.csv",    "label": "walking"    },
+        { "filename": "data/1_walking/log_4.csv",    "label": "walking"    },
+        { "filename": "data/1_walking/log_5.csv",    "label": "walking"    },
+        { "filename": "data/1_walking/log_6.csv",    "label": "walking"    },
+        { "filename": "data/1_walking/log_7.csv",    "label": "walking"    },
+        { "filename": "data/2_running/log_0.csv",    "label": "running"    },
+        { "filename": "data/2_running/log_1.csv",    "label": "running"    },
+        { "filename": "data/2_running/log_2.csv",    "label": "running"    },
+        { "filename": "data/2_running/log_3.csv",    "label": "running"    },
+        { "filename": "data/2_running/log_4.csv",    "label": "running"    },
+        { "filename": "data/2_running/log_5.csv",    "label": "running"    },
+        { "filename": "data/3_cycling/log_0.csv",    "label": "cycling"    },
+        { "filename": "data/3_cycling/log_1.csv",    "label": "cycling"    },
+        { "filename": "data/3_cycling/log_2.csv",    "label": "cycling"    },
+        { "filename": "data/3_cycling/log_3.csv",    "label": "cycling"    }
+    ],
+    "name": "LSM6DSV16X",
+    "mlc_odr": "30 Hz",
+    "input_type": "accelerometer_only",
+    "accelerometer_fs": "8 g",
+    "accelerometer_odr": "30 Hz",
+    "decision_tree_count": 1,
+    "window_length": 60,
+    "filters": [
+        { "filter_id": "filter_1", "filter_type": "BP", "input": "Acc_V2", "a2": "-1.66", "a3": "0.81", "gain": "0.09" }
+    ],
+    "features": [
+        { "feature_name": "MEAN",          "input": "Acc_V2",          "signed": true },
+        { "feature_name": "MEAN",          "input": "Acc_V2_filter_1", "signed": true },
+        { "feature_name": "VARIANCE",      "input": "Acc_V2",          "signed": true },
+        { "feature_name": "VARIANCE",      "input": "Acc_V2_filter_1", "signed": true },
+        { "feature_name": "ENERGY",        "input": "Acc_V2",          "signed": true },
+        { "feature_name": "ENERGY",        "input": "Acc_V2_filter_1", "signed": true },
+        { "feature_name": "PEAK_TO_PEAK",  "input": "Acc_V2",          "signed": true },
+        { "feature_name": "PEAK_TO_PEAK",  "input": "Acc_V2_filter_1", "signed": true },
+        { "feature_name": "ZERO_CROSSING", "input": "Acc_V2",          "signed": true, "threshold": "0.0" },
+        { "feature_name": "ZERO_CROSSING", "input": "Acc_V2_filter_1", "signed": true, "threshold": "0.0" },
+        { "feature_name": "PEAK_DETECTOR", "input": "Acc_V2",          "signed": true, "threshold": "0.0" },
+        { "feature_name": "PEAK_DETECTOR", "input": "Acc_V2_filter_1", "signed": true, "threshold": "0.0" },
+        { "feature_name": "MINIMUM",       "input": "Acc_V2",          "signed": true },
+        { "feature_name": "MINIMUM",       "input": "Acc_V2_filter_1", "signed": true },
+        { "feature_name": "MAXIMUM",       "input": "Acc_V2",          "signed": true },
+        { "feature_name": "MAXIMUM",       "input": "Acc_V2_filter_1", "signed": true }
+    ],
+    "dectree_features": [
+        "F1_MEAN_on_ACC_V2",
+        "F2_MEAN_on_filter_BP_on_A_V2",
+        "F3_VAR_on_ACC_V2",
+        "F4_VAR_on_filter_BP_on_A_V2",
+        "F5_ENERGY_on_ACC_V2",
+        "F6_ENERGY_on_filter_BP_on_A_V2",
+        "F7_PeakToPeak_on_ACC_V2",
+        "F8_PeakToPeak_on_filter_BP_on_A_V2",
+        "F9_ZeroCross_on_ACC_V2",
+        "F10_ZeroCross_on_filter_BP_on_A_V2",
+        "F11_PeaKDet_on_ACC_V2",
+        "F12_PeaKDet_on_filter_BP_on_A_V2",
+        "F13_MIN_on_ACC_V2",
+        "F14_MIN_on_filter_BP_on_A_V2",
+        "F15_MAX_on_ACC_V2",
+        "F16_MAX_on_filter_BP_on_A_V2"
+    ],
+    "dectrees": [
+        {
+            "filename": "output/har_dectree.txt",
+            "results": [
+                { "label": "stationary", "value": 1  },
+                { "label": "walking",    "value": 4  },
+                { "label": "running",    "value": 8  },
+                { "label": "cycling",    "value": 12 }
+            ],
+            "metaclassifier": [ 2, 2, 2, 2 ]
+        }
+    ],
+    "arff": "output/har_features.arff",
+    "ucf": "output/har_tutorial.ucf"
+}

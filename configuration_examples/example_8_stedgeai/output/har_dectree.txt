@@ -1,0 +1,18 @@
+F6_ENERGY_on_filter_BP_on_A_V2 <= 11.16
+|   F7_PeakToPeak_on_ACC_V2 <= 0.60: stationary
+|   F7_PeakToPeak_on_ACC_V2 >  0.60
+|   |   F11_PeaKDet_on_ACC_V2 <= 38.50
+|   |   |   F3_VAR_on_ACC_V2 <= 0.23
+|   |   |   |   F11_PeaKDet_on_ACC_V2 <= 31.00: stationary
+|   |   |   |   F11_PeaKDet_on_ACC_V2 >  31.00
+|   |   |   |   |   F2_MEAN_on_filter_BP_on_A_V2 <= -0.00: stationary
+|   |   |   |   |   F2_MEAN_on_filter_BP_on_A_V2 >  -0.00: cycling
+|   |   |   F3_VAR_on_ACC_V2 >  0.23: walking
+|   |   F11_PeaKDet_on_ACC_V2 >  38.50: cycling
+F6_ENERGY_on_filter_BP_on_A_V2 >  11.16
+|   F1_MEAN_on_ACC_V2 <= 2.75
+|   |   F11_PeaKDet_on_ACC_V2 <= 44.50: walking
+|   |   F11_PeaKDet_on_ACC_V2 >  44.50: cycling
+|   F1_MEAN_on_ACC_V2 >  2.75
+|   |   F9_ZeroCross_on_ACC_V2 <= 28.00: running
+|   |   F9_ZeroCross_on_ACC_V2 >  28.00: walking

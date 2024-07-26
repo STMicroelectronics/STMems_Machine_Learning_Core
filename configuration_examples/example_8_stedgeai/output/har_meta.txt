@@ -1,0 +1,4 @@
+stationary 2 0
+walking 2 1
+running 2 2
+cycling 2 3
