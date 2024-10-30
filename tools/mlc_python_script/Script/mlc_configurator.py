@@ -1,479 +1,630 @@
+from typing import List, Optional
+from dataclasses import dataclass
 import subprocess
 import logging
+import sys
 import os
 import re
 
 
-class mlc_configurator:
-	
-    class mlc_feature(object):
-        def __init__(self, name=None, input=None, threshold=0, paramList=None):
-            self.name = name
-            self.input = input
-            self.threshold = threshold
-            if paramList is None:
-                self.paramList = []
-            else:
-                self.paramList = paramList 
-            
-    class mlc_filter: 
-        def __init__(self, filter_id="filter_1", 
-                     name=None, 
-                     coef_b1=0.5, 
-                     coef_b2=-0.5, 
-                     coef_b3=0, 
-                     coef_a2=0, 
-                     coef_a3=0, 
-                     coef_gain=1):
-            self.filter_id = filter_id
-            self.name = name
-            self.coef_b1 = coef_b1
-            self.coef_b2 = coef_b2
-            self.coef_b3 = coef_b3
-            self.coef_a2 = coef_a2
-            self.coef_a3 = coef_a3
-            self.coef_gain = coef_gain
+MLC_TOOL_EXECUTABLE: str = "mlc_configuration_tool"
+if sys.platform == "win32":
+    MLC_TOOL_EXECUTABLE += ".exe"
+GEN_ARFF_FILENAME: str = "gen_arff.txt"
+GEN_UCF_FILENAME: str = "gen_ucf.txt"
 
-    def get_devices(): 
-        device_list = ["LSM6DSOX", "LSM6DSRX", "ISM330DHCX", "LSM6DSO32X", "IIS2ICLX", "ASM330LHHX", "LSM6DSV16X", "LSM6DSV16BX", "LIS2DUX12", "LIS2DUXS12"] 
-        return device_list
 
-    def get_mlc_odr( device_name ): 
-        if device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX":
-            mlc_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz"]
-        elif device_name == "LIS2DUX12" or device_name == "LIS2DUXS12":
-            mlc_odr = ["12.5 Hz", "25 Hz", "50 Hz", "100 Hz", "200 Hz"]
-        else: 
-            mlc_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz"]
-        return mlc_odr
+@dataclass
+class MLCFeature:
+    name: str
+    input: str
+    threshold: Optional[float] = None
+    param_list: Optional[List[float]] = None
 
-    def get_mlc_input_type( device_name ): 
-        if device_name == "IIS2ICLX":
-            mlc_input_type = ["accelerometer_only"]
-        elif device_name == "LIS2DUX12":
-            mlc_input_type = ["accelerometer_only", "accelerometer+temperature"]
-        elif device_name == "LIS2DUXS12":
-            mlc_input_type = ["accelerometer_only", "accelerometer+temperature/qvar"]
-        else: 
-            mlc_input_type = ["accelerometer_only", "accelerometer+gyroscope"]
-        return mlc_input_type
 
-    def get_mlc_inputs( device_name, input_type ): 
-        mlc_inputs = []
-        if input_type == "accelerometer_only":
-            if device_name == "IIS2ICLX":
-                mlc_inputs = ["Acc_X", "Acc_Y", "Acc_V", "Acc_V2"]
-            else:
-                mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2"]
-        elif input_type == "accelerometer+gyroscope":
-            mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2", 
-                          "Gyr_X", "Gyr_Y", "Gyr_Z", "Gyr_V", "Gyr_V2"]
-        elif input_type == "accelerometer+temperature":
-            mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2", 
-                          "T_X", "T_V", "T_V2"]
-        elif input_type == "accelerometer+temperature/qvar":
-            mlc_inputs = ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2", 
-                          "TQ_X", "TQ_V", "TQ_V2"]
-        return mlc_inputs
+@dataclass
+class MLCFilter:
+    filter_id: str
+    name: str
+    coef_b1: float = 0.5
+    coef_b2: float = -0.5
+    coef_b3: float = 0.0
+    coef_a2: float = 0.0
+    coef_a3: float = 0.0
+    coef_gain: float = 1.0
 
-    def get_accelerometer_fs( device_name ):
-        if device_name == "LSM6DSOX":
-            accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
-        if device_name == "LSM6DSO32X":
-            accelerometer_fs = ["4 g", "8 g", "16 g", "32 g"]
-        elif device_name == "IIS2ICLX":
-            accelerometer_fs = ["0.5 g", "1 g", "2 g", "3 g"]
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX":
-            accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
-        elif device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX":
-            accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
-        elif device_name == "LIS2DUX12" or device_name == "LIS2DUXS12":
-            accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
-        else:
-            logging.error("ERROR: device \"" + device_name + "\" not supported")
-        return accelerometer_fs
 
-    def get_accelerometer_odr( device_name ):
-        if device_name == "LSM6DSOX":
-            accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
-        elif device_name == "LSM6DSO32X":
-            accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
-        elif device_name == "IIS2ICLX":
-            accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz"]
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
-            accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
-        elif device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX": 
-            accelerometer_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz", "480 Hz", "960 Hz", "1920 Hz", "3840 Hz", "7680 Hz"]
-        elif device_name == "LIS2DUX12" or device_name == "LIS2DUXS12": 
-            accelerometer_odr = ["12.5 Hz", "25 Hz", "50 Hz", "100 Hz", "200 Hz", "400 Hz", "800 Hz"]
-        else:
-            logging.error("ERROR: device \"" + device_name + "\" not supported")
-        return accelerometer_odr
+def get_devices() -> List[str]:
+    return [
+        "ASM330LHB",
+        "ASM330LHBG1",
+        "ASM330LHHX",
+        "ASM330LHHXG1",
+        "IIS2ICLX",
+        "ISM330BX",
+        "ISM330DHCX",
+        "LIS2DUX12",
+        "LIS2DUXS12",
+        "LSM6DSO32X",
+        "LSM6DSOX",
+        "LSM6DSRX",
+        "LSM6DSV16BX",
+        "LSM6DSV16X",
+        "LSM6DSV32X",
+        "ST1VAFE3BX",
+        "ST1VAFE6AX",
+    ]
 
-    def get_gyroscope_fs( device_name ):
-        if device_name == "LSM6DSOX":
-            gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps"]
-        elif device_name == "LSM6DSO32X":
-            gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps"]
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
-            gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps", "4000 dps"]
-        elif device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX": 
-            gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps", "2000 dps", "4000 dps"]
-        else:
-            logging.error("ERROR: device \"" + device_name + "\" not supported")
-        return gyroscope_fs
 
-    def get_gyroscope_odr( device_name ):
-        if device_name == "LSM6DSOX":
-            gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
-        elif device_name == "LSM6DSO32X":
-            gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6664 Hz"]
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "ASM330LHHX": 
-            gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz", "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
-        elif device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX": 
-            gyroscope_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz", "480 Hz", "960 Hz", "1920 Hz", "3840 Hz", "7680 Hz"]
-        else:
-            logging.error("ERROR: device \"" + device_name + "\" not supported")
-        return gyroscope_odr
+def get_mlc_odr(device_name) -> Optional[List[str]]:
+    mlc_odr = None
+    if device_name in ["LSM6DSV16X", "LSM6DSV32X", "ST1VAFE6AX"]:
+        mlc_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz"]
+    elif device_name in ["LSM6DSV16BX", "ISM330BX"]:
+        mlc_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz", "480 Hz",
+                   "960 Hz"]
+    elif device_name in ["LIS2DUX12", "LIS2DUXS12"]:
+        mlc_odr = ["12.5 Hz", "25 Hz", "50 Hz", "100 Hz", "200 Hz"]
+    elif device_name == "ST1VAFE3BX":
+        mlc_odr = ["12.5 Hz", "25 Hz", "50 Hz", "100 Hz", "200 Hz", "400 Hz",
+                   "800 Hz"]
+    elif device_name in get_devices():
+        mlc_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz"]
+    else:
+        logging.error("ERROR: device '%s' not supported", device_name)
+    return mlc_odr
 
-    def get_filter_names( input_type ):
-        filter_names = []
-        if input_type == "accelerometer_only":
-            filter_names = ["HP_Acc_XYZ", "HP_Acc_V", "HP_Acc_V2",
-                            "BP_Acc_XYZ", "BP_Acc_V", "BP_Acc_V2", 
-                            "IIR1_Acc_XYZ", "IIR1_Acc_V", "IIR1_Acc_V2", 
-                            "IIR2_Acc_XYZ", "IIR2_Acc_V", "IIR2_Acc_V2"]
-        elif input_type == "accelerometer+gyroscope":
-            filter_names = ["HP_Acc_XYZ", "HP_Acc_V", "HP_Acc_V2", "HP_Gyr_XYZ", "HP_Gyr_V",  "HP_Gyr_V2",
-                            "BP_Acc_XYZ", "BP_Acc_V", "BP_Acc_V2", "BP_Gyr_XYZ", "BP_Gyr_V", "BP_Gyr_V2",
-                            "IIR1_Acc_XYZ", "IIR1_Acc_V", "IIR1_Acc_V2", "IIR1_Gyr_XYZ", "IIR1_Gyr_V", "IIR1_Gyr_V2", 
-                            "IIR2_Acc_XYZ", "IIR2_Acc_V", "IIR2_Acc_V2", "IIR2_Gyr_XYZ", "IIR2_Gyr_V", "IIR2_Gyr_V2"]
-        elif input_type == "accelerometer+temperature" or input_type == "accelerometer+temperature/qvar":
-            filter_names = ["HP_Acc_XYZ", "HP_Acc_V", "HP_Acc_V2", "HP_T/Q_XYZ", "HP_T/Q_V",  "HP_T/Q_V2",
-                            "BP_Acc_XYZ", "BP_Acc_V", "BP_Acc_V2", "BP_T/Q_XYZ", "BP_T/Q_V", "BP_T/Q_V2",
-                            "IIR1_Acc_XYZ", "IIR1_Acc_V", "IIR1_Acc_V2", "IIR1_T/Q_XYZ", "IIR1_T/Q_V", "IIR1_T/Q_V2", 
-                            "IIR2_Acc_XYZ", "IIR2_Acc_V", "IIR2_Acc_V2", "IIR2_T/Q_XYZ", "IIR2_T/Q_V", "IIR2_T/Q_V2"]
-        return filter_names
 
-    def get_feature_names():
-        feature_names = ["MEAN", 
-                         "ABS_MEAN",
-                         "VARIANCE", 
-                         "ABS_VARIANCE",
-                         "ENERGY", 
-                         "PEAK_TO_PEAK", 
-                         "ABS_PEAK_TO_PEAK",
-                         "ZERO_CROSSING", 
-                         "POSITIVE_ZERO_CROSSING", 
-                         "NEGATIVE_ZERO_CROSSING", 
-                         "PEAK_DETECTOR", 
-                         "POSITIVE_PEAK_DETECTOR", 
-                         "NEGATIVE_PEAK_DETECTOR", 
-                         "MINIMUM", 
-                         "ABS_MINIMUM",
-                         "MAXIMUM",
-                         "ABS_MAXIMUM",
-                         "RECURSIVE_MEAN_RMS_VARIANCE",
+def get_mlc_input_type(device_name) -> Optional[List[str]]:
+    mlc_input_type = None
+    if device_name == "IIS2ICLX":
+        mlc_input_type = ["accelerometer_only",
+                          "accelerometer+external_sensor"]
+    elif device_name == "LIS2DUX12":
+        mlc_input_type = ["accelerometer_only",
+                          "accelerometer+temperature"]
+    elif device_name == "LIS2DUXS12":
+        mlc_input_type = ["accelerometer_only",
+                          "accelerometer+temperature/qvar"]
+    elif device_name == "ST1VAFE3BX":
+        mlc_input_type = ["accelerometer_only",
+                          "accelerometer+vafe"]
+    elif device_name in ["LSM6DSV16X", "LSM6DSV32X"]:
+        mlc_input_type = ["accelerometer_only",
+                          "accelerometer+gyroscope",
+                          "accelerometer+external_sensor/qvar",
+                          "accelerometer+gyroscope+external_sensor/qvar"]
+    elif device_name in ["LSM6DSV16BX"]:
+        mlc_input_type = ["accelerometer_only",
+                          "accelerometer+gyroscope",
+                          "accelerometer+qvar",
+                          "accelerometer+gyroscope+qvar"]
+    elif device_name in ["ST1VAFE6AX"]:
+        mlc_input_type = ["accelerometer_only",
+                          "accelerometer+gyroscope",
+                          "accelerometer+vafe",
+                          "accelerometer+gyroscope+vafe"]
+    elif device_name in get_devices():
+        mlc_input_type = ["accelerometer_only",
+                          "accelerometer+gyroscope",
+                          "accelerometer+external_sensor",
+                          "accelerometer+gyroscope+external_sensor"]
+    else:
+        logging.error("ERROR: device '%s' not supported", device_name)
+    return mlc_input_type
+
+
+def get_mlc_inputs(input_type) -> Optional[List[str]]:
+    mlc_inputs = []
+    input_types = input_type.split("+")
+    if any(x in input_types for x in ["accelerometer_only", "accelerometer"]):
+        mlc_inputs += ["Acc_X", "Acc_Y", "Acc_Z", "Acc_V", "Acc_V2"]
+    if "gyroscope" in input_types:
+        mlc_inputs += ["Gyr_X", "Gyr_Y", "Gyr_Z", "Gyr_V", "Gyr_V2"]
+    if "external_sensor/qvar" in input_types:
+        mlc_inputs += ["Ext/Qvar_X", "Ext/Qvar_Y", "Ext/Qvar_Z", "Ext/Qvar_V",
+                       "Ext/Qvar_V2"]
+    elif "external_sensor" in input_types:
+        mlc_inputs += ["Ext_X", "Ext_Y", "Ext_Z", "Ext_V", "Ext_V2"]
+    elif "temperature/qvar" in input_types:
+        mlc_inputs += ["Temp/Qvar_X"]
+    elif "temperature" in input_types:
+        mlc_inputs += ["Temp_X"]
+    elif "qvar" in input_types:
+        mlc_inputs += ["Qvar_X"]
+    elif "vafe" in input_types:
+        mlc_inputs += ["vAFE_X"]
+    if len(mlc_inputs) == 0:
+        logging.error("ERROR: input type '%s' not supported", input_type)
+        return None
+    return mlc_inputs
+
+
+def get_accelerometer_fs(device_name) -> Optional[List[str]]:
+    accelerometer_fs = None
+    if device_name in ["LSM6DSO32X", "LSM6DSV32X"]:
+        accelerometer_fs = ["4 g", "8 g", "16 g", "32 g"]
+    elif device_name == "IIS2ICLX":
+        accelerometer_fs = ["0.5 g", "1 g", "2 g", "3 g"]
+    elif device_name == "ISM330BX":
+        accelerometer_fs = ["2 g", "4 g", "8 g"]
+    elif device_name in get_devices():
+        accelerometer_fs = ["2 g", "4 g", "8 g", "16 g"]
+    else:
+        logging.error("ERROR: device '%s' not supported", device_name)
+    return accelerometer_fs
+
+
+def get_accelerometer_odr(device_name) -> Optional[List[str]]:
+    accelerometer_odr = None
+    if device_name == "IIS2ICLX":
+        accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz",
+                             "208 Hz", "416 Hz", "833 Hz"]
+    elif device_name in ["LSM6DSRX", "ISM330DHCX", "ASM330LHHX",
+                         "ASM330LHHXG1", "ASM330LHB", "ASM330LHBG1",
+                         "IIS2ICLX"]:
+        accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz",
+                             "416 Hz", "833 Hz", "1666 Hz", "3332 Hz",
+                             "6667 Hz"]
+    elif device_name == "ISM330BX":
+        accelerometer_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz",
+                             "480 Hz", "960 Hz", "1920 Hz", "3840 Hz"]
+    elif device_name in ["LSM6DSV16X", "LSM6DSV32X", "LSM6DSV16BX",
+                         "ST1VAFE6AX"]:
+        accelerometer_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz",
+                             "480 Hz", "960 Hz", "1920 Hz", "3840 Hz",
+                             "7680 Hz"]
+    elif device_name in ["LIS2DUX12", "LIS2DUXS12", "ST1VAFE3BX"]:
+        accelerometer_odr = ["12.5 Hz", "25 Hz", "50 Hz", "100 Hz", "200 Hz",
+                             "400 Hz", "800 Hz"]
+    if device_name in get_devices():
+        accelerometer_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz",
+                             "416 Hz", "833 Hz", "1666 Hz", "3332 Hz",
+                             "6664 Hz"]
+    else:
+        logging.error("ERROR: device '%s' not supported", device_name)
+    return accelerometer_odr
+
+
+def get_gyroscope_fs(device_name) -> Optional[List[str]]:
+    gyroscope_fs = None
+    if device_name in ["LSM6DSRX", "ISM330DHCX", "ASM330LHHX",
+                       "ASM330LHHXG1", "ASM330LHB", "ASM330LHBG1", "IIS2ICLX"]:
+        gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps",
+                        "2000 dps", "4000 dps"]
+    elif device_name in ["LSM6DSOX", "LSM6DSO32X"]:
+        gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps",
+                        "2000 dps"]
+    elif device_name in (
+        set(get_devices()) - {"IIS2ICLX", "LIS2DUX12", "LIS2DUXS12", "ST1VAFE3BX"}
+    ):
+        gyroscope_fs = ["125 dps", "250 dps", "500 dps", "1000 dps",
+                        "2000 dps", "4000 dps"]
+    else:
+        logging.error("ERROR: device '%s' not supported", device_name)
+    return gyroscope_fs
+
+
+def get_gyroscope_odr(device_name) -> Optional[List[str]]:
+    gyroscope_odr = None
+    if device_name in ["LSM6DSRX", "ISM330DHCX", "ASM330LHHX",
+                       "ASM330LHHXG1", "ASM330LHB", "ASM330LHBG1", "IIS2ICLX"]:
+        gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz",
+                         "416 Hz", "833 Hz", "1666 Hz", "3332 Hz", "6667 Hz"]
+    elif device_name == "ISM330BX":
+        gyroscope_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz",
+                         "480 Hz", "960 Hz", "1920 Hz", "3840 Hz"]
+    elif device_name in ["LSM6DSV16X", "LSM6DSV32X", "LSM6DSV16BX",
+                         "ST1VAFE6AX"]:
+        gyroscope_odr = ["15 Hz", "30 Hz", "60 Hz", "120 Hz", "240 Hz",
+                         "480 Hz", "960 Hz", "1920 Hz", "3840 Hz", "7680 Hz"]
+    elif device_name in (
+        set(get_devices()) - {"IIS2ICLX", "LIS2DUX12", "LIS2DUXS12", "ST1VAFE3BX"}
+    ):
+        gyroscope_odr = ["12.5 Hz", "26 Hz", "52 Hz", "104 Hz", "208 Hz",
+                         "416 Hz", "833 Hz", "1666 Hz", "3332 Hz",
+                         "6664 Hz"]
+    else:
+        logging.error("ERROR: device '%s' not supported", device_name)
+    return gyroscope_odr
+
+
+def get_filter_names(input_type) -> Optional[List[str]]:
+    mlc_inputs = get_mlc_inputs(input_type)
+    if mlc_inputs is None:
+        logging.error("ERROR: input type '%s' not supported", input_type)
+        return None
+    mlc_filters = []
+    for filt in ["HP", "BP", "IIR1", "IIR2"]:
+        for inp in mlc_inputs:
+            if inp.endswith("_X"):
+                inp = inp.replace("_X", "_XYZ")
+            elif any(inp.endswith(x) for x in ["_Y", "_Z"]):
+                continue
+            mlc_filters.append(f"{filt}_{inp}")
+    return mlc_filters
+
+
+def get_feature_names(device_name) -> Optional[List[str]]:
+    if device_name not in get_devices():
+        logging.error("ERROR: device name '%s' not supported", device_name)
+        return None
+    feature_list = [
+        "MEAN",
+        "ABS_MEAN",
+        "VARIANCE",
+        "ABS_VARIANCE",
+        "ENERGY",
+        "PEAK_TO_PEAK",
+        "ABS_PEAK_TO_PEAK",
+        "ZERO_CROSSING",
+        "POSITIVE_ZERO_CROSSING",
+        "NEGATIVE_ZERO_CROSSING",
+        "PEAK_DETECTOR",
+        "POSITIVE_PEAK_DETECTOR",
+        "NEGATIVE_PEAK_DETECTOR",
+        "MINIMUM",
+        "ABS_MINIMUM",
+        "MAXIMUM",
+        "ABS_MAXIMUM",
+    ]
+    if device_name in ["LSM6DSV16X", "LSM6DSV32X", "LSM6DSV16BX", "ISM330BX",
+                       "ST1VAFE6AX", "LIS2DUX12", "LIS2DUXS12"]:
+        feature_list += ["RECURSIVE_MEAN_RMS_VARIANCE",
                          "RECURSIVE_MAX_MIN_PEAKTOPEAK"]
-        return feature_names
-
-    def arff_generator( device_name, 
-	                   datalogs, 
-                       results,
-                       mlc_odr, 
-                       input_type, 
-                       accelerometer_fs, 
-                       accelerometer_odr, 
-                       gyroscope_fs, 
-                       gyroscope_odr, 
-                       n_decision_trees, 
-                       window_length, 
-                       filters_list, 
-                       features_list, 
-                       arff_filename,
-                       current_directory ):
-                       
-        if device_name not in mlc_configurator.get_devices():
-            logging.error("ERROR: device \"" + device_name + "\" not supported")
-            return
-        
-        if len(features_list) == 0:
-            logging.error("ERROR: features_list empty")
-            return
-
-        config_for_ARFF_gen_filename = os.path.join(current_directory, "ARFF_generation.txt")
-
-        with open(config_for_ARFF_gen_filename, "w") as f:
-            for i in range(len(datalogs)):
-                if os.path.isfile(datalogs[i]):
-                    f.write("%d,0,%s,%s\n" % (i, results[i], datalogs[i]))
-                else:
-                    logging.error("\nERROR: The following file does not exist: " + datalogs[i])
-
-            f.write("configurationStarted\n")
-            f.write(device_name + "\n")
-            f.write(mlc_odr + "\n")
-            f.write("<input_type>" + input_type + ",") 
-
-            # accelerometer settings
-            f.write(accelerometer_fs +",")  
-            f.write(accelerometer_odr + ",") 
-
-            # gyroscope settings
-            if "gyroscope" in input_type:
-                f.write(gyroscope_fs + ",")  
-                f.write(gyroscope_odr + ",")
-
-            f.write('\n');
-            f.write('%d\n' % (n_decision_trees))  ## Number of decision trees
-            f.write('%d\n' % (window_length))  ## Window length (supported values: from 1 to 255)
+    return feature_list
 
 
-            # Filters
-            for i in range(len(filters_list)):
-                if filters_list[i].name not in mlc_configurator.get_filter_names(input_type):
-                    logging.error("ERROR: filter \"" + filters_list[i].name + "\" not supported")
-                    return
-                f.write("<"+ filters_list[i].filter_id +">" + filters_list[i].name + "\n")
-                if "BP" in filters_list[i].name:
-                    f.write("<coefficients>" + 
-                            str(filters_list[i].coef_a2) + "," + 
-                            str(filters_list[i].coef_a3) + "," + 
-                            str(filters_list[i].coef_gain) + "\n")
-                elif "IIR1" in filters_list[i].name:
-                    f.write("<coefficients>" + 
-                            str(filters_list[i].coef_b1) + "," + 
-                            str(filters_list[i].coef_b2) + "," + 
-                            str(filters_list[i].coef_a2) + "\n")
-                elif "IIR2" in filters_list[i].name:
-                    f.write("<coefficients>" + 
-                            str(filters_list[i].coef_b1) + "," + 
-                            str(filters_list[i].coef_b2) + "," + 
-                            str(filters_list[i].coef_b3) + "," + 
-                            str(filters_list[i].coef_a2) + "," + 
-                            str(filters_list[i].coef_a3) + "\n")
-            f.write("<filter>" + "END_FILTERS" + "\n") 
+def arff_generator(
+    device_name: str,
+    datalogs: List[str],
+    results: List[int],
+    mlc_odr: str,
+    input_type: str,
+    accelerometer_fs: str,
+    accelerometer_odr: str,
+    gyroscope_fs: str,
+    gyroscope_odr: str,
+    n_decision_trees: int,
+    window_length: int,
+    filters_list: List[MLCFilter],
+    features_list: List[MLCFeature],
+    arff_filename: str,
+    current_directory: str,
+) -> None:
+    if device_name not in get_devices():
+        logging.error("ERROR: device '%s' not supported", device_name)
+        return
 
-            # Features
-            for i in range(len(features_list)):
-                if features_list[i].name not in mlc_configurator.get_feature_names():
-                    logging.error("ERROR: feature \"" + features_list[i].name + "\" not supported")
-                    return
-                if features_list[i].input not in mlc_configurator.get_mlc_inputs(device_name, input_type):
-                    if "_filter_" not in features_list[i].input:
-                        logging.error("ERROR: feature input \"" + features_list[i].input + "\" not supported")
-                        return
-                f.write("<feature>" + features_list[i].name + "_" + features_list[i].input + "\n")
-                if "ZERO_CROSSING" in features_list[i].name or "PEAK_DETECTOR" in features_list[i].name:
-                    f.write("<threshold>" + str(features_list[i].threshold) + "\n") 
-                if "RECURSIVE_MEAN_RMS_VARIANCE" in features_list[i].name or "RECURSIVE_MAX_MIN_PEAKTOPEAK" in features_list[i].name:
-                    f.write("<paramList>" + str(features_list[i].paramList) + "\n")  
-            f.write("<feature>" + "END_FEATURES" + "\n") 
-            f.write(arff_filename + "\n")
-            f.write("EXIT_APP")
-            f.close()
+    if len(features_list) == 0:
+        logging.error("ERROR: features_list empty")
+        return
 
-            logging.info("\nCalling MLC app for features computation and ARFF generation...")
-            args = ["mlc_configuration_tool.exe", f"-{device_name}", "-MLC_script", config_for_ARFF_gen_filename]
-            proc = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            if (proc.returncode == 0):
-                logging.info("\nARFF generated successfully: " + arff_filename)
+    input_names = get_mlc_inputs(input_type)
+    if input_names is None:
+        return
+
+    filter_names = get_filter_names(input_type)
+    if filter_names is None:
+        return
+
+    feature_names = get_feature_names(device_name)
+    if feature_names is None:
+        return
+
+    gen_arff_path = os.path.join(current_directory, GEN_ARFF_FILENAME)
+    with open(gen_arff_path, "w", encoding="ascii") as f:
+        for i, datalog in enumerate(datalogs):
+            if os.path.isfile(datalog):
+                f.write(f"{i},0,{results[i]},{datalog}\n")
             else:
-                logging.error(f"\n{proc.stderr.decode()}")
+                logging.error("\nERROR: The following file does not exist: %s",
+                              datalog)
 
-    def ucf_generator(  device_name, 
-	                   arff_filename, 
-                       dectree_filenames,
-                       result_names, 
-                       result_values, 
-                       metaclassifier_values, 
-                       ucf_filename,
-                       current_directory ):
+        f.write("configurationStarted\n")
+        f.write(device_name + "\n")
+        f.write(mlc_odr + "\n")
+        f.write("<input_type>" + input_type + ",")
 
-        config_for_ARFF_gen_filename = os.path.join(current_directory, "ARFF_generation.txt")
-        config_for_UCF_gen_filename = os.path.join(current_directory, "UCF_generation.txt")
+        # accelerometer settings
+        f.write(accelerometer_fs + ",")
+        f.write(accelerometer_odr + ",")
 
-        for i in range(0,8): 
-            if not result_names[i]:
-                break
-        n_decision_trees = i
-        if n_decision_trees != len(dectree_filenames): 
-           logging.error("\nERROR: wrong number of decision trees detected. Please check result_names and dectree_filenames")
+        # gyroscope settings
+        if "gyroscope" in input_type:
+            f.write(gyroscope_fs + ",")
+            f.write(gyroscope_odr + ",")
 
-        results_DT1 = result_names[0]
-        results_DT2 = result_names[1]
-        results_DT3 = result_names[2]
-        results_DT4 = result_names[3]
-        results_DT5 = result_names[4]
-        results_DT6 = result_names[5]
-        results_DT7 = result_names[6]
-        results_DT8 = result_names[7]
+        f.write("\n")
+        f.write(f"{n_decision_trees}\n")  # Number of decision trees
+        f.write(f"{window_length}\n")  # Window length (from 1 to 255)
 
-        result_values_DT1 = result_values[0]
-        result_values_DT2 = result_values[1]
-        result_values_DT3 = result_values[2]
-        result_values_DT4 = result_values[3]
-        result_values_DT5 = result_values[4]
-        result_values_DT6 = result_values[5]
-        result_values_DT7 = result_values[6]
-        result_values_DT8 = result_values[7]
+        # Filters
+        for i, filt in enumerate(filters_list):
+            if filt.name not in filter_names:
+                logging.error("ERROR: filter '%s' not supported", filt.name)
+                return
+            f.write(f"<{filt.filter_id}>{filt.name}\n")
+            if "BP" in filt.name:
+                f.write("<coefficients>"
+                        f"{filt.coef_a2},{filt.coef_a3},{filt.coef_gain}\n")
+            elif "IIR1" in filt.name:
+                f.write("<coefficients>"
+                        f"{filt.coef_b1},{filt.coef_b2},{filt.coef_a2}\n")
+            elif "IIR2" in filt.name:
+                f.write("<coefficients>"
+                        f"{filt.coef_b1},{filt.coef_b2},{filt.coef_b3},"
+                        f"{filt.coef_a2},{filt.coef_a3}\n")
+        f.write("<filter>" + "END_FILTERS" + "\n")
 
-        metaclassifier1_values = metaclassifier_values[0]
-        metaclassifier2_values = metaclassifier_values[1]
-        metaclassifier3_values = metaclassifier_values[2]
-        metaclassifier4_values = metaclassifier_values[3]
-        metaclassifier5_values = metaclassifier_values[4]
-        metaclassifier6_values = metaclassifier_values[5]
-        metaclassifier7_values = metaclassifier_values[6]
-        metaclassifier8_values = metaclassifier_values[7]
-        
-        # Prepare file for UCF configuration
-        configurationStarted = False
-        configurationStopped = False
-        with open(config_for_ARFF_gen_filename, "r") as input:
-          with open(config_for_UCF_gen_filename, "w") as output:
-            for line in input:
-              if (configurationStarted == False):
-                if  line.rstrip() == "configurationStarted":
-                  configurationStarted = True
-                  output.write(line)
-              else: #after configurationStarted
-                if line.rstrip() == "<feature>END_FEATURES":
-                  configurationStopped = True
-                  output.write(line)
+        # Features
+        for i, feat in enumerate(features_list):
+            if feat.name not in feature_names:
+                logging.error("ERROR: feature '%s' not supported", feat.name)
+                return
 
-                  #read ARFF to get feature names
-                  with open(arff_filename) as arff_file:
-                    lines_of_arff = arff_file.readlines()
-                    for line_of_arff in lines_of_arff:
-                      if line_of_arff.startswith( '@attribute F' ) or line_of_arff.startswith('@ATTRIBUTE F'):
-                        line_of_arff_splitted = line_of_arff.split();
-                        output.write(line_of_arff_splitted[1] + '\n')
+            feat_input, *filter_id = feat.input.split("_filter_")
+            if feat_input not in input_names:
+                logging.error("ERROR: feature input '%s' not supported",
+                              feat.input)
+                return
 
-                  #read ARFF to get class names
-                  with open(arff_filename) as arff_file:
-                    lines_of_arff = arff_file.readlines()
-                    for line_of_arff in lines_of_arff:
-                      if line_of_arff.startswith( '@attribute class' ):
-                        classes_string = line_of_arff[line_of_arff.find('{') + 1 : line_of_arff.find('}')]
-                        classes_list = classes_string.split(', ')
-                        logging.info("Classes from ARFF: " + ', '.join(classes_list))
+            if len(filter_id) > 0:
+                id_val = int(filter_id[0])
+                if id_val > len(filters_list):
+                    logging.error("ERROR: feature '%s' is using a filter id "
+                                  "value greater that the number of filters "
+                                  "'%d'", feat.name, len(filters_list))
+                    return
 
-                elif (configurationStopped == False):
-                  if line.strip() != "":
-                    output.write(line)
-        input.close()
-        output.close()
+            f.write("<feature>" + feat.name + "_" + feat.input + "\n")
+            if any(x in feat.name for x in ["ZERO_CROSSING", "PEAK_DETECTOR"]):
+                f.write(f"<threshold>{feat.threshold}\n")
+            if any(x in feat.name for x in ["RECURSIVE_MEAN_RMS_VARIANCE",
+                                            "RECURSIVE_MAX_MIN_PEAKTOPEAK"]):
+                f.write(f"<paramList>{feat.param_list}\n")
 
-        f = open(config_for_UCF_gen_filename, "a+")
-
-        # Results (classes)
-        result_values_DT1_string = ""
-        result_values_DT2_string = ""
-        result_values_DT3_string = ""
-        result_values_DT4_string = ""
-        result_values_DT5_string = ""
-        result_values_DT6_string = ""
-        result_values_DT7_string = ""
-        result_values_DT8_string = ""
-        max_DT_classes = 256
-        if device_name == "LSM6DSOX" or device_name == "LSM6DSO32X" or device_name == "LSM6DSV16X" or device_name == "LSM6DSV16BX" or device_name == "LIS2DUX12" or device_name == "LIS2DUXS12": 
-            max_DT_classes = 16
-        elif device_name == "LSM6DSRX" or device_name == "ISM330DHCX" or device_name == "IIS2ICLX" or device_name == "ASM330LHHX":
-            max_DT_classes = 256
-        else:
-            logging.error("ERROR: device \"" + device_name + "\" not supported")
-        for i in range(0, max_DT_classes):
-          if i > 0:
-            result_values_DT1_string += " ; "
-            result_values_DT2_string += " ; "
-            result_values_DT3_string += " ; "
-            result_values_DT4_string += " ; "
-            result_values_DT5_string += " ; "
-            result_values_DT6_string += " ; "
-            result_values_DT7_string += " ; "
-            result_values_DT8_string += " ; "
-          if i in result_values_DT1:
-            result_values_DT1_string += results_DT1[result_values_DT1.index(i)]
-          if i in result_values_DT2:
-            result_values_DT2_string += results_DT2[result_values_DT2.index(i)]
-          if i in result_values_DT3:
-            result_values_DT3_string += results_DT3[result_values_DT3.index(i)]
-          if i in result_values_DT4:
-            result_values_DT4_string += results_DT4[result_values_DT4.index(i)]
-          if i in result_values_DT5:
-            result_values_DT5_string += results_DT5[result_values_DT5.index(i)]
-          if i in result_values_DT6:
-            result_values_DT6_string += results_DT6[result_values_DT6.index(i)]
-          if i in result_values_DT7:
-            result_values_DT7_string += results_DT7[result_values_DT7.index(i)]
-          if i in result_values_DT8:
-            result_values_DT8_string += results_DT8[result_values_DT8.index(i)]
-        f.write(result_values_DT1_string + "\n")
-        if n_decision_trees >= 2:
-            f.write(result_values_DT2_string + "\n")
-        if n_decision_trees >= 3:
-            f.write(result_values_DT3_string + "\n")
-        if n_decision_trees >= 4:
-            f.write(result_values_DT4_string + "\n")
-        if n_decision_trees >= 5:
-            f.write(result_values_DT5_string + "\n")
-        if n_decision_trees >= 6:
-            f.write(result_values_DT6_string + "\n")
-        if n_decision_trees >= 7:
-            f.write(result_values_DT7_string + "\n")
-        if n_decision_trees >= 8:
-            f.write(result_values_DT8_string + "\n")
-
-        # Decision tree files
-        for i in range(n_decision_trees):
-            f.write(dectree_filenames[i] + "\n")
-
-        # Meta-classifiers
-        f.write(metaclassifier1_values + "\n")
-        if n_decision_trees >= 2:
-            f.write(metaclassifier2_values + "\n")
-        if n_decision_trees >= 3:
-            f.write(metaclassifier3_values + "\n")
-        if n_decision_trees >= 4:
-            f.write(metaclassifier4_values + "\n")
-        if n_decision_trees >= 5:
-            f.write(metaclassifier5_values + "\n")
-        if n_decision_trees >= 6:
-            f.write(metaclassifier6_values + "\n")
-        if n_decision_trees >= 7:
-            f.write(metaclassifier7_values + "\n")
-        if n_decision_trees >= 8:
-            f.write(metaclassifier8_values + "\n")
-
-        # UCF file
-        f.write(ucf_filename + "\n")
+        f.write("<feature>" + "END_FEATURES" + "\n")
+        f.write(arff_filename + "\n")
         f.write("EXIT_APP")
         f.close()
 
-        logging.info("\nCalling MLC app for .ucf file generation...")
-        args = ["mlc_configuration_tool.exe", f"-{device_name}", "-MLC_script", config_for_UCF_gen_filename]
-        proc = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if (proc.returncode == 0):
-            logging.info("\n.ucf file generated successfully: " + ucf_filename)
+        logging.info("\nCalling MLC app for features computation and ARFF "
+                     "generation...")
+        args = [
+            MLC_TOOL_EXECUTABLE,
+            f"-{device_name}",
+            "-MLC_script", gen_arff_path,
+        ]
+        proc = subprocess.run(
+            args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+        if proc.returncode == 0:
+            logging.info("\nARFF generated successfully: %s", arff_filename)
         else:
-            logging.error(f"\n{proc.stderr.decode()}")
-    def h_generator(ucf_filename, h_filename):
-        with open(ucf_filename, "r") as f:
-            ucff = f.readlines()
+            logging.error("\n%s", proc.stderr.decode())
 
-        conf_data = ""
-        conf_regex = "Ac\s+([0-9,A-F]+)\s+([0-9,A-F]+)"
-        for i in range(len(ucff)):
-            res = re.search(conf_regex, ucff[i])
-            if(res and len(res.groups()) == 2):
-                hline = ("\n\t{.address = 0x%s, .data = 0x%s,}" % res.groups())
-                if(i < len(ucff) - 1):
-                    hline += ","
-                conf_data += hline
 
-        hstr = (
-            '''
+def ucf_generator(
+    device_name: str,
+    arff_filename: str,
+    dectree_filenames: List[str],
+    result_names: List[str],
+    result_values: List[List[int]],
+    metaclassifier_values: List[str],
+    ucf_filename: str,
+    current_directory: str,
+) -> None:
+    gen_arff_path = os.path.join(current_directory, GEN_ARFF_FILENAME)
+    gen_ucf_path = os.path.join(current_directory, GEN_UCF_FILENAME)
+
+    for i in range(0, 8):
+        if not result_names[i]:
+            break
+    n_decision_trees = i
+    if n_decision_trees != len(dectree_filenames):
+        logging.error("\nERROR: wrong number of decision trees detected. "
+                      "Please check result_names and dectree_filenames")
+
+    results_dt1 = result_names[0]
+    results_dt2 = result_names[1]
+    results_dt3 = result_names[2]
+    results_dt4 = result_names[3]
+    results_dt5 = result_names[4]
+    results_dt6 = result_names[5]
+    results_dt7 = result_names[6]
+    results_dt8 = result_names[7]
+
+    result_values_dt1 = result_values[0]
+    result_values_dt2 = result_values[1]
+    result_values_dt3 = result_values[2]
+    result_values_dt4 = result_values[3]
+    result_values_dt5 = result_values[4]
+    result_values_dt6 = result_values[5]
+    result_values_dt7 = result_values[6]
+    result_values_dt8 = result_values[7]
+
+    metaclassifier1_values = metaclassifier_values[0]
+    metaclassifier2_values = metaclassifier_values[1]
+    metaclassifier3_values = metaclassifier_values[2]
+    metaclassifier4_values = metaclassifier_values[3]
+    metaclassifier5_values = metaclassifier_values[4]
+    metaclassifier6_values = metaclassifier_values[5]
+    metaclassifier7_values = metaclassifier_values[6]
+    metaclassifier8_values = metaclassifier_values[7]
+
+    # Prepare file for UCF configuration
+    inp = open(gen_arff_path, "r", encoding="ascii")
+    out = open(gen_ucf_path, "w", encoding="ascii")
+    config_started = False
+    config_stopped = False
+
+    for line in inp:
+        if config_started is False:
+            if line.rstrip() == "configurationStarted":
+                config_started = True
+                out.write(line)
+            continue
+
+        if line.rstrip() == "<feature>END_FEATURES":
+            config_stopped = True
+            out.write(line)
+
+            # read ARFF to get feature names
+            with open(arff_filename, mode="r", encoding="ascii") as arff_file:
+                lines_of_arff = arff_file.readlines()
+                for line_of_arff in lines_of_arff:
+                    if any(
+                        line_of_arff.startswith(x)
+                        for x in ["@attribute F", "@ATTRIBUTE F"]
+                    ):
+                        line_of_arff_splitted = line_of_arff.split()
+                        out.write(line_of_arff_splitted[1] + "\n")
+
+            # read ARFF to get class names
+            with open(arff_filename, mode="r", encoding="ascii") as arff_file:
+                lines_of_arff = arff_file.readlines()
+                for line_of_arff in lines_of_arff:
+                    if line_of_arff.startswith("@attribute class"):
+                        classes_string = line_of_arff[
+                            line_of_arff.find("{") + 1:
+                            line_of_arff.find("}")
+                        ]
+                        classes_list = classes_string.split(", ")
+                        logging.info("Classes from ARFF: %s",
+                                     ", ".join(classes_list))
+
+        elif config_stopped is False:
+            if line.strip() != "":
+                out.write(line)
+
+    inp.close()
+    out.close()
+
+    f = open(gen_ucf_path, "a+", encoding="ascii")
+
+    if device_name in ["LSM6DSRX", "ISM330DHCX", "ASM330LHHX", "ASM330LHHXG1",
+                       "ASM330LHB", "ASM330LHBG1", "IIS2ICLX"]:
+        max_dectree_classes = 256
+    elif device_name in get_devices():
+        max_dectree_classes = 16
+    else:
+        logging.error("ERROR: device '%s' not supported", device_name)
+        return
+
+    # Results (classes)
+    result_values_dt1_str = ""
+    result_values_dt2_str = ""
+    result_values_dt3_str = ""
+    result_values_dt4_str = ""
+    result_values_dt5_str = ""
+    result_values_dt6_str = ""
+    result_values_dt7_str = ""
+    result_values_dt8_str = ""
+
+    for i in range(0, max_dectree_classes):
+        if i > 0:
+            result_values_dt1_str += " ; "
+            result_values_dt2_str += " ; "
+            result_values_dt3_str += " ; "
+            result_values_dt4_str += " ; "
+            result_values_dt5_str += " ; "
+            result_values_dt6_str += " ; "
+            result_values_dt7_str += " ; "
+            result_values_dt8_str += " ; "
+
+        if i in result_values_dt1:
+            result_values_dt1_str += results_dt1[result_values_dt1.index(i)]
+        if i in result_values_dt2:
+            result_values_dt2_str += results_dt2[result_values_dt2.index(i)]
+        if i in result_values_dt3:
+            result_values_dt3_str += results_dt3[result_values_dt3.index(i)]
+        if i in result_values_dt4:
+            result_values_dt4_str += results_dt4[result_values_dt4.index(i)]
+        if i in result_values_dt5:
+            result_values_dt5_str += results_dt5[result_values_dt5.index(i)]
+        if i in result_values_dt6:
+            result_values_dt6_str += results_dt6[result_values_dt6.index(i)]
+        if i in result_values_dt7:
+            result_values_dt7_str += results_dt7[result_values_dt7.index(i)]
+        if i in result_values_dt8:
+            result_values_dt8_str += results_dt8[result_values_dt8.index(i)]
+
+    f.write(result_values_dt1_str + "\n")
+    if n_decision_trees >= 2:
+        f.write(result_values_dt2_str + "\n")
+    if n_decision_trees >= 3:
+        f.write(result_values_dt3_str + "\n")
+    if n_decision_trees >= 4:
+        f.write(result_values_dt4_str + "\n")
+    if n_decision_trees >= 5:
+        f.write(result_values_dt5_str + "\n")
+    if n_decision_trees >= 6:
+        f.write(result_values_dt6_str + "\n")
+    if n_decision_trees >= 7:
+        f.write(result_values_dt7_str + "\n")
+    if n_decision_trees >= 8:
+        f.write(result_values_dt8_str + "\n")
+
+    # Decision tree files
+    for i in range(n_decision_trees):
+        f.write(dectree_filenames[i] + "\n")
+
+    # Meta-classifiers
+    f.write(metaclassifier1_values + "\n")
+    if n_decision_trees >= 2:
+        f.write(metaclassifier2_values + "\n")
+    if n_decision_trees >= 3:
+        f.write(metaclassifier3_values + "\n")
+    if n_decision_trees >= 4:
+        f.write(metaclassifier4_values + "\n")
+    if n_decision_trees >= 5:
+        f.write(metaclassifier5_values + "\n")
+    if n_decision_trees >= 6:
+        f.write(metaclassifier6_values + "\n")
+    if n_decision_trees >= 7:
+        f.write(metaclassifier7_values + "\n")
+    if n_decision_trees >= 8:
+        f.write(metaclassifier8_values + "\n")
+
+    # UCF file
+    f.write(ucf_filename + "\n")
+    f.write("EXIT_APP")
+    f.close()
+
+    logging.info("\nCalling MLC app for .ucf file generation...")
+    args = [
+        MLC_TOOL_EXECUTABLE,
+        f"-{device_name}",
+        "-MLC_script",
+        gen_ucf_path,
+    ]
+    proc = subprocess.run(
+        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if proc.returncode == 0:
+        logging.info("\n.ucf file generated successfully: %s", ucf_filename)
+    else:
+        logging.error("\n%s", proc.stderr.decode())
+
+
+def h_generator(ucf_filename: str, h_filename: str) -> None:
+    with open(ucf_filename, "r", encoding="ascii") as f:
+        ucff = f.readlines()
+
+    conf_data = ""
+    conf_regex = r"Ac\s+([0-9,A-F]+)\s+([0-9,A-F]+)"
+    for i, ucf in enumerate(ucff):
+        res = re.search(conf_regex, ucf)
+        if not isinstance(res, re.Match):
+            continue
+        if len(res.groups()) != 2:
+            continue
+        g1, g2 = res.groups()
+        hline = "\n\t{" + f".address = 0x{g1}, .data = 0x{g2}" + ",}"
+        if i < len(ucff) - 1:
+            hline += ","
+        conf_data += hline
+
+    hstr = """
 /*
 ******************************************************************************
 configuration header file generated from ucf file
@@ -510,9 +661,10 @@ const ucf_line_t mlc_configuration[] = {%s
 #endif
 
 #endif /* MLC_CONFIGURATION_H */
-            ''' % conf_data
-        )
+            """ % conf_data
 
-        with open(h_filename, "w") as hout:
-            hout.write(hstr)
-        logging.info("Header file successfully generated. %s  ->  %s" % (ucf_filename, h_filename))
+    with open(h_filename, "w", encoding="ascii") as hout:
+        hout.write(hstr)
+
+    logging.info("Header file successfully generated. %s  ->  %s",
+                 ucf_filename, h_filename)
