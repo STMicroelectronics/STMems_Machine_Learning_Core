@@ -1,0 +1,3 @@
+static 26
+medium 30
+high 30

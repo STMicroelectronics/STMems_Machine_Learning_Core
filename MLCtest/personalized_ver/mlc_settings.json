@@ -1,0 +1,58 @@
+{
+    "accelerometer_fs": "16 g",
+    "accelerometer_odr": "120 Hz",
+    "datalogs": [
+        {
+            "filename": "/Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/personalized_ver/high_personalized.csv",
+            "label": "high"
+        }
+    ],
+    "decision_tree_count": "1",
+    "dectrees": [
+        {
+            "filename": "dectree.txt",
+            "results": [
+                {
+                    "label": "static",
+                    "value": 0
+                },
+                {
+                    "label": "medium",
+                    "value": 4
+                },
+                {
+                    "label": "high",
+                    "value": 8
+                }
+            ],
+            "metaclassifier": [0, 0, 0, 0]
+        }
+    ],
+    "features": [
+        {
+            "feature_name": "PEAK_TO_PEAK",
+            "fifo": "false",
+            "input": "Acc_V2",
+            "signed": true
+        }
+    ],
+    "features_output_filename": "features.arff",
+    "config_output_filename": "mlc_conf.json",
+    "filters": [
+    ],
+    "gyroscope_fs": "2000 dps",
+    "gyroscope_odr": "30 Hz",
+    "input_type": "accelerometer_only",
+    "json_format": {
+        "type": "mlc_settings",
+        "version": "1.0"
+    },
+    "max_dectrees": 4,
+    "max_results_per_dt": 16,
+    "mlc_odr": "120 Hz",
+    "name": "LSM6DSV16X",
+    "subgroups_per_dt": 4,
+    "thresh_accu_to_take_default": 0.05,
+    "thresh_n_percentage_default": 0.05,
+    "window_length": "240"
+}

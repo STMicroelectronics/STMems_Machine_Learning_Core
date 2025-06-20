@@ -1,0 +1,58 @@
+ST Edge AI Core v2.1.0-20194 329b0e98d (MLC 1.2.0-RC2)
+Created date  : 2025-06-19 19:17:14
+Parameters    : validate --target mlc --device lsm6dsv16x --mlc-conf mlc_conf.json --logs testset2.csv --ignore-zero
+
+Exec/report summary (validate)
+--------------------------------------------------------------------------------
+target/series : mlc
+device name   : LSM6DSV16X
+config file   : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/mlc_conf.json
+output dir    : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/mlc_ai_output
+logs dir/file : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/testset2.csv
+--------------------------------------------------------------------------------
+
+
+Histogram report for decision tree 0
+--------------------------------------------------------------------------------
+notes: - output prediction frequencies
+       - 3128 samples (3 items per sample)
+       - C0 may also indicates the initial state of DT0
+
+3 classes (3128 samples)
+-------------------------
+C0        719 
+C4       1200 
+C8       1209 
+
+
+Histogram report for decision tree 1
+--------------------------------------------------------------------------------
+notes: - output prediction frequencies
+       - 3128 samples (1 items per sample)
+       - C0 may also indicates the initial state of DT1
+
+1 classes (3128 samples)
+-------------------------
+C0       3128 
+
+
+Histogram report for decision tree 2
+--------------------------------------------------------------------------------
+notes: - output prediction frequencies
+       - 3128 samples (1 items per sample)
+       - C0 may also indicates the initial state of DT2
+
+1 classes (3128 samples)
+-------------------------
+C0       3128 
+
+
+Histogram report for decision tree 3
+--------------------------------------------------------------------------------
+notes: - output prediction frequencies
+       - 3128 samples (1 items per sample)
+       - C0 may also indicates the initial state of DT3
+
+1 classes (3128 samples)
+-------------------------
+C0       3128

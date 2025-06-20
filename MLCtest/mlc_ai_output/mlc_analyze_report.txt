@@ -1,0 +1,59 @@
+ST Edge AI Core v2.1.0-20194 329b0e98d (MLC 1.2.0-RC2)
+Created date   : 2025-06-19 18:44:23
+Parameters     : analyze --target mlc --device lsm6dsv16x --tree dectree.txt --arff features.arff --meta meta.txt
+
+Exec/report summary (analyze)
+--------------------------------------------------------------------------------
+target/series  : mlc
+device name    : LSM6DSV16X
+decision tree  : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/dectree.txt
+arff features  : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/features.arff
+metaclassifier : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/meta.txt
+output dir     : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/mlc_ai_output
+--------------------------------------------------------------------------------
+
+Running the simulation...
+
+Features used:
+    F1_PEAK_TO_PEAK_ACC_V2
+
+Decision tree info:
+    Nodes  : 5
+    Leaves : 3
+    Depth  : 3
+
+Results before meta-classifier:
+    Class "static" accuracy  : 100.000000 %
+                   recall    : 100.000000 %
+                   precision : 100.000000 %
+    Class "medium" accuracy  : 100.000000 %
+                   recall    : 100.000000 %
+                   precision : 100.000000 %
+    Class "high"   accuracy  : 100.000000 %
+                   recall    : 100.000000 %
+                   precision : 100.000000 %
+
+    Global accuracy : 100.000000 %
+
+          static (T)    medium (T)    high (T)
+static    9             0             0       
+medium    0             9             0       
+high      0             0             9       
+
+Results after meta-classifier:
+    Class "static" accuracy  : 100.000000 %
+                   recall    : 100.000000 %
+                   precision : 100.000000 %
+    Class "medium" accuracy  : 100.000000 %
+                   recall    : 100.000000 %
+                   precision : 100.000000 %
+    Class "high"   accuracy  : 100.000000 %
+                   recall    : 100.000000 %
+                   precision : 100.000000 %
+
+    Global accuracy : 100.000000 %
+
+          static (T)    medium (T)    high (T)
+static    9             0             0       
+medium    0             9             0       
+high      0             0             9

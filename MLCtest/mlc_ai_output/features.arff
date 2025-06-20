@@ -1,0 +1,33 @@
+@relation 'MLC'
+
+@attribute F1_PEAK_TO_PEAK_ACC_V2 numeric
+@attribute class {static, medium, high}
+
+@data
+0.0117188, static
+0.0078125, static
+0.0429688, static
+0.0117188, static
+0.0136719, static
+0.0117188, static
+0.00585938, static
+0.0810547, static
+0.00585938, static
+3.24805, medium
+4.03906, medium
+3.04688, medium
+4.23047, medium
+3.79102, medium
+3.85938, medium
+3.67383, medium
+4.41016, medium
+4.60938, medium
+27.5156, high
+33.2188, high
+32.6875, high
+34.75, high
+33.9375, high
+35.4063, high
+31.8125, high
+27.0781, high
+22.3281, high

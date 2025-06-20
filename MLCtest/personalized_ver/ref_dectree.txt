@@ -1,0 +1,4 @@
+F1_PEAK_TO_PEAK_ACC_V2 <= 1.56: static
+F1_PEAK_TO_PEAK_ACC_V2 >  1.56
+|   F1_PEAK_TO_PEAK_ACC_V2 <= 15.84: medium
+|   F1_PEAK_TO_PEAK_ACC_V2 >  15.84: high

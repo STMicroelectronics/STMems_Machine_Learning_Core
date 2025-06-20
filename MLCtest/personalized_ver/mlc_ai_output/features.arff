@@ -1,0 +1,11 @@
+@relation 'MLC'
+
+@attribute F1_PEAK_TO_PEAK_ACC_V2 numeric
+@attribute class {high}
+
+@data
+13.125, high
+14.1172, high
+13.2031, high
+10.3594, high
+11.5547, high

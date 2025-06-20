@@ -1,0 +1,56 @@
+ST Edge AI Core v2.1.0-20194 329b0e98d (MLC 1.2.0-RC2)
+Created date  : 2025-06-20 10:59:51
+Parameters    : validate --target mlc --device lsm6dsv16x --mlc-conf mlc_conf.json --logs testset.csv --ignore-zero
+
+Exec/report summary (validate)
+--------------------------------------------------------------------------------
+target/series : mlc
+device name   : LSM6DSV16X
+config file   : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/reference_ver/mlc_conf.json
+output dir    : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/reference_ver/mlc_ai_output
+logs dir/file : /Users/moonseopkim/Downloads/ST_MLC/STMems_Machine_Learning_Core/MLCtest/reference_ver/testset.csv
+--------------------------------------------------------------------------------
+
+
+Histogram report for decision tree 0
+--------------------------------------------------------------------------------
+notes: - output prediction frequencies
+       - 1264 samples (1 items per sample)
+       - C0 may also indicates the initial state of DT0
+
+1 classes (1264 samples)
+-------------------------
+C0       1264 
+
+
+Histogram report for decision tree 1
+--------------------------------------------------------------------------------
+notes: - output prediction frequencies
+       - 1264 samples (1 items per sample)
+       - C0 may also indicates the initial state of DT1
+
+1 classes (1264 samples)
+-------------------------
+C0       1264 
+
+
+Histogram report for decision tree 2
+--------------------------------------------------------------------------------
+notes: - output prediction frequencies
+       - 1264 samples (1 items per sample)
+       - C0 may also indicates the initial state of DT2
+
+1 classes (1264 samples)
+-------------------------
+C0       1264 
+
+
+Histogram report for decision tree 3
+--------------------------------------------------------------------------------
+notes: - output prediction frequencies
+       - 1264 samples (1 items per sample)
+       - C0 may also indicates the initial state of DT3
+
+1 classes (1264 samples)
+-------------------------
+C0       1264
