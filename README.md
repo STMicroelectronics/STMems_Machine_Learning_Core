@@ -1,3 +1,14 @@
+Important Notice
+==================
+
+DISCONTINUED (July 2025): the maintenance for this repository has been discontinued.
+
+Please refer to:
+
+https://github.com/STMicroelectronics/st-mems-machine-learning-core/
+
+for the up-to-date tutorials, examples and tools for the Machine Learning Core (MLC) feature available in STMicroelectronics MEMS sensors.
+
 # Machine Learning Core
 
 This repository provides information, examples and configurations of the **Machine Learning Core** (MLC), a hardware processing engine dedicated to the most extreme real-time edge computing available in the latest  products in the [**ST sensors portfolio**](https://www.st.com/en/mems-and-sensors.html?sc=MEMS). Products that offer the MLC end in "X".
